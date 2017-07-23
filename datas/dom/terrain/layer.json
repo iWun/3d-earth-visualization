@@ -1,0 +1,7 @@
+{
+  "author": "lmw",
+  "format": "heightmap-1.0",
+  "version": "1.0.0",
+  "scheme": "tms",
+  "tiles": ["{z}/{x}/{y}.terrain"]
+}

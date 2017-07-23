@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="b5001fe2-b1da-4b1b-b3c4-96305a15a3d3" name="119.29.134.43" url="http://119.29.134.43/earth">
+        <fileTransfer host="119.29.134.43" port="22" rootFolder="/var/www/html/earth" accessType="SFTP" password="df98df9ddf9cdf93df9fdf9bdf9edf99df92dfdbdfdb" username="ubuntu">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

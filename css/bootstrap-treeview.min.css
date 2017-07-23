@@ -1,0 +1,90 @@
+.treeview .list-group-item{cursor:pointer}.treeview span.indent{margin-left:10px;margin-right:10px}.treeview span.icon{width:12px;margin-right:5px}.treeview .node-disabled{color:silver;cursor:not-allowed}
+
+
+/* .squaredTwo */
+.squaredTwo {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    position: relative;
+    margin: 5px 5px;
+    background: #fcfff4;
+    background: -moz-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+    background: -webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+    background: linear-gradient(to bottom, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+    -moz-box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0, 0, 0, 0.5);
+}
+.squaredTwo label {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    background: -moz-linear-gradient(top, #222222 0%, #45484d 100%);
+    background: -webkit-linear-gradient(top, #222222 0%, #45484d 100%);
+    background: linear-gradient(to bottom, #222222 0%, #45484d 100%);
+    -moz-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.5), 0px 1px 0px white;
+    -webkit-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.5), 0px 1px 0px white;
+    box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.5), 0px 1px 0px white;
+}
+.squaredTwo label:after {
+    content: '';
+    width: 9px;
+    height: 5px;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    border: 3px solid #fcfff4;
+    border-top: none;
+    border-right: none;
+    background: transparent;
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+    opacity: 0;
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+.squaredTwo label:hover::after {
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
+    opacity: 0.3;
+}
+.squaredTwo input[type=checkbox] {
+    visibility: hidden;
+}
+.squaredTwo input[type=checkbox] + label:after {
+    filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
+    opacity: 0;
+}
+.squaredTwo input[type=checkbox]:checked + label:after {
+    filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
+    opacity: 1;
+}
+
+
+/* end .squaredTwo */
+.treeview{
+    color: #fff;
+}
+.node-layerTree:not(.node-disabled){
+    border : none;
+    padding: 0;
+    font-size: 11pt;
+}
+.node-layerTree:not(.node-disabled):hover{
+    color: #000;
+}
+.list-group-item>.fui-cross{
+	padding : 2px 7px;
+	visibility : hidden;
+	float : right;
+}
+.list-group-item:hover>.fui-cross{
+	visibility : visible;
+}
+*{
+	-webkit-tap-highlight-color:transparent;
+}

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0"/>
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="x5-fullscreen" content="true">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+    <title>Virtual Earth</title>
+    <link href="./Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/flat-ui.min.css" rel="stylesheet">
+    <link href="./css/bootstrap-treeview.min.css" rel="stylesheet">
+    <link href="./css/se.css" rel="stylesheet">
+
+    <style>
+        html, body, #cesiumContainer {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #000;
+            color: #eee;
+            font-family: sans-serif;
+            font-size: 10pt;
+        }
+    </style>
+
+
+</head>
+<body>
+
+<div id="cesiumContainer">
+</div>
+
+<div id="loadOverlay" class='loadingOverlay'>
+    <ul id="loadbar" class="ins">
+        <li>
+            <div id="loadinglayer1" class="ball"></div>
+            <div id="loadinglayer7" class="pulse"></div>
+        </li>
+        <li>
+            <div id="loadinglayer2" class="ball"></div>
+            <div id="loadinglayer8" class="pulse"></div>
+        </li>
+        <li>
+            <div id="loadinglayer3" class="ball"></div>
+            <div id="loadinglayer9" class="pulse"></div>
+        </li>
+        <li>
+            <div id="loadinglayer4" class="ball"></div>
+            <div id="loadinglayer10" class="pulse"></div>
+        </li>
+        <li>
+            <div id="loadinglayer5" class="ball"></div>
+            <div id="loadinglayer11" class="pulse"></div>
+        </li>
+    </ul>
+</div>
+<script>
+    /* var loadingInterval = setInterval(function(){
+     var loadingBar = document.getElementById('loadbar');
+     loadingBar.className = "";
+     setTimeout(function(){
+     loadingBar.className = "ins"
+     },10);
+     },3500); */
+    Window.LOADING_FLAG = true;
+    var loadingBar = document.getElementById('loadbar');
+    var oldTime = new Date().getTime();
+    var dTime;
+    function run() {
+        var curTime = new Date().getTime();
+        if (curTime - oldTime >= 3500) {
+            loadingBar.className = "";
+            if (curTime - oldTime >= 3550) {
+                loadingBar.className = "ins";
+                oldTime = curTime;
+            }
+        }
+        if (Window.LOADING_FLAG == true) {
+            requestAnimationFrame(run);
+        }
+    }
+    requestAnimationFrame(run);
+</script>
+<script src="js/lib/require.min.js" data-main="js/index"></script>
+</body>
+</html>
