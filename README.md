@@ -82,6 +82,10 @@
 
 由[SSEC](http://www.ssec.wisc.edu/)数据中心生产的，全球红外线复合产品的增强视图。采用不同波段提取信息，用于自然灾害预测。
 
+<p align="center">
+<img src="./images/github/climate.png" width="50%" />
+</p>
+
 ## 设置
 
 <p align="center">

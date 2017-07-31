@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e39d31e1-cb7b-46e2-91c4-739f59a4b432" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
     </list>
     <ignored path="OneEarth.iws" />
@@ -93,7 +94,7 @@
         <entry file="file://$PROJECT_DIR$/js/models/VisualLayerModel.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="304">
-              <caret line="67" column="29" lean-forward="true" selection-start-line="67" selection-start-column="29" selection-end-line="67" selection-end-column="29" />
+              <caret line="67" column="29" lean-forward="false" selection-start-line="67" selection-start-column="29" selection-end-line="67" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -103,7 +104,7 @@
         <entry file="file://$PROJECT_DIR$/js/models/ClimateLayerModel.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="665">
-              <caret line="57" column="27" lean-forward="true" selection-start-line="57" selection-start-column="25" selection-end-line="57" selection-end-column="40" />
+              <caret line="57" column="27" lean-forward="false" selection-start-line="57" selection-start-column="25" selection-end-line="57" selection-end-column="40" />
               <folding>
                 <element signature="e#322#338#0" expanded="false" />
               </folding>
@@ -114,8 +115,8 @@
       <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="865">
-              <caret line="82" column="33" lean-forward="false" selection-start-line="82" selection-start-column="33" selection-end-line="82" selection-end-column="33" />
+            <state relative-caret-position="86">
+              <caret line="83" column="0" lean-forward="true" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -125,7 +126,7 @@
         <entry file="file://$PROJECT_DIR$/js/models/ClimateLayerCollection.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="285">
-              <caret line="18" column="41" lean-forward="true" selection-start-line="18" selection-start-column="39" selection-end-line="18" selection-end-column="46" />
+              <caret line="18" column="41" lean-forward="false" selection-start-line="18" selection-start-column="39" selection-end-line="18" selection-end-column="46" />
               <folding />
             </state>
           </provider>
@@ -537,12 +538,12 @@
       <workItem from="1495115417926" duration="3904000" />
       <workItem from="1499675066298" duration="7824000" />
       <workItem from="1499770525338" duration="24112000" />
-      <workItem from="1501492481023" duration="4649000" />
+      <workItem from="1501492481023" duration="5270000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="182767000" />
+    <option name="totallyTimeSpent" value="183388000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -554,7 +555,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="0" width="1378" height="735" extended-state="1" />
+    <frame x="-7" y="0" width="1378" height="735" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19477612" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -910,7 +911,7 @@
     <entry file="file://$PROJECT_DIR$/js/models/VisualLayerModel.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="304">
-          <caret line="67" column="29" lean-forward="true" selection-start-line="67" selection-start-column="29" selection-end-line="67" selection-end-column="29" />
+          <caret line="67" column="29" lean-forward="false" selection-start-line="67" selection-start-column="29" selection-end-line="67" selection-end-column="29" />
           <folding />
         </state>
       </provider>
@@ -918,7 +919,7 @@
     <entry file="file://$PROJECT_DIR$/js/models/ClimateLayerModel.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="665">
-          <caret line="57" column="27" lean-forward="true" selection-start-line="57" selection-start-column="25" selection-end-line="57" selection-end-column="40" />
+          <caret line="57" column="27" lean-forward="false" selection-start-line="57" selection-start-column="25" selection-end-line="57" selection-end-column="40" />
           <folding>
             <element signature="e#322#338#0" expanded="false" />
           </folding>
@@ -928,15 +929,15 @@
     <entry file="file://$PROJECT_DIR$/js/models/ClimateLayerCollection.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
-          <caret line="18" column="41" lean-forward="true" selection-start-line="18" selection-start-column="39" selection-end-line="18" selection-end-column="46" />
+          <caret line="18" column="41" lean-forward="false" selection-start-line="18" selection-start-column="39" selection-end-line="18" selection-end-column="46" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="865">
-          <caret line="82" column="33" lean-forward="false" selection-start-line="82" selection-start-column="33" selection-end-line="82" selection-end-column="33" />
+        <state relative-caret-position="86">
+          <caret line="83" column="0" lean-forward="true" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
           <folding />
         </state>
       </provider>
