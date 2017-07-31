@@ -54,33 +54,33 @@
 
 <p align="center">
 <img src="./images/github/1.png" width="50%" />
-<p>t1 时刻</p>
+<p align="center">t1 时刻</p>
 </p>
 
 <p align="center">
 <img src="./images/github/2.png" width="50%" />
-<p>t2 时刻</p>
+<p align="center">t2 时刻</p>
 </p>
 
 <p align="center">
 <img src="./images/github/3.png" width="50%" />
-<p>t3 时刻</p>
+<p align="center">t3 时刻</p>
 </p>
 
 <p align="center">
 <img src="./images/github/4.png" width="50%" />
-<p>t4 时刻</p>
+<p align="center">t4 时刻</p>
 </p>
 
 <p align="center">
 <img src="./images/github/5.png" width="50%" />
-<p>t5 时刻</p>
+<p align="center">t5 时刻</p>
 </p>
 
 
 ## 分析
 
-由SSEC数据中心生产的，全球红外线复合产品的增强视图。采用不同波段提取信息，用于自然灾害预测。
+由[SSEC](http://www.ssec.wisc.edu/)数据中心生产的，全球红外线复合产品的增强视图。采用不同波段提取信息，用于自然灾害预测。
 
 ## 设置
 
