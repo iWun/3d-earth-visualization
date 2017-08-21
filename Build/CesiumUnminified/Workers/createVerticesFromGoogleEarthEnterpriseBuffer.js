@@ -21,7 +21,6 @@
  * See https://github.com/AnalyticalGraphicsInc/cesium/blob/master/LICENSE.md for full licensing details.
  */
 (function () {
-/*global define*/
 define('Core/defined',[],function() {
     'use strict';
 
@@ -45,7 +44,6 @@ define('Core/defined',[],function() {
     return defined;
 });
 
-/*global define*/
 define('Core/DeveloperError',[
         './defined'
     ], function(
@@ -126,7 +124,6 @@ define('Core/DeveloperError',[
     return DeveloperError;
 });
 
-/*global define*/
 define('Core/Check',[
         './defined',
         './DeveloperError'
@@ -293,10 +290,26 @@ define('Core/Check',[
         }
     };
 
+    /**
+     * Throws if test1 and test2 is not typeof 'number' and not equal in value
+     *
+     * @param {String} name1 The name of the first variable being tested
+     * @param {String} name2 The name of the second variable being tested against
+     * @param {*} test1 The value to test
+     * @param {*} test2 The value to test against
+     * @exception {DeveloperError} test1 and test2 should be type of 'number' and be equal in value
+     */
+    Check.typeOf.number.equals = function (name1, name2, test1, test2) {
+        Check.typeOf.number(name1, test1);
+        Check.typeOf.number(name2, test2);
+        if (test1 !== test2) {
+            throw new DeveloperError(name1 + ' must be equal to ' + name2 + ', the actual values are ' + test1 + ' and ' + test2);
+        }
+    };
+
     return Check;
 });
 
-/*global define*/
 define('Core/freezeObject',[
         './defined'
     ], function(
@@ -322,7 +335,6 @@ define('Core/freezeObject',[
     return freezeObject;
 });
 
-/*global define*/
 define('Core/defaultValue',[
         './freezeObject'
     ], function(
@@ -343,7 +355,7 @@ define('Core/defaultValue',[
      * param = Cesium.defaultValue(param, 'default');
      */
     function defaultValue(a, b) {
-        if (a !== undefined) {
+        if (a !== undefined && a !== null) {
             return a;
         }
         return b;
@@ -562,7 +574,6 @@ MersenneTwister.prototype.random = function() {
 return MersenneTwister;
 });
 
-/*global define*/
 define('Core/Math',[
         '../ThirdParty/mersenne-twister',
         './defaultValue',
@@ -1276,7 +1287,7 @@ define('Core/Math',[
     };
 
     /**
-     * Generates a random number in the range of [0.0, 1.0)
+     * Generates a random floating point number in the range of [0.0, 1.0)
      * using a Mersenne twister.
      *
      * @returns {Number} A random number in the range of [0.0, 1.0).
@@ -1288,8 +1299,20 @@ define('Core/Math',[
         return randomNumberGenerator.random();
     };
 
+
     /**
-     * Computes <code>Math.acos(value)</acode>, but first clamps <code>value</code> to the range [-1.0, 1.0]
+     * Generates a random number between two numbers.
+     *
+     * @param {Number} min The minimum value.
+     * @param {Number} max The maximum value.
+     * @returns {Number} A random number between the min and max.
+     */
+    CesiumMath.randomBetween = function(min, max) {
+        return CesiumMath.nextRandomNumber() * (max - min) + min;
+    };
+
+    /**
+     * Computes <code>Math.acos(value)</code>, but first clamps <code>value</code> to the range [-1.0, 1.0]
      * so that the function will never return NaN.
      *
      * @param {Number} value The value for which to compute acos.
@@ -1304,7 +1327,7 @@ define('Core/Math',[
     };
 
     /**
-     * Computes <code>Math.asin(value)</acode>, but first clamps <code>value</code> to the range [-1.0, 1.0]
+     * Computes <code>Math.asin(value)</code>, but first clamps <code>value</code> to the range [-1.0, 1.0]
      * so that the function will never return NaN.
      *
      * @param {Number} value The value for which to compute asin.
@@ -1363,14 +1386,13 @@ define('Core/Math',[
     return CesiumMath;
 });
 
-/*global define*/
 define('Core/Cartesian3',[
-    './Check',
-    './defaultValue',
-    './defined',
-    './DeveloperError',
-    './freezeObject',
-    './Math'
+        './Check',
+        './defaultValue',
+        './defined',
+        './DeveloperError',
+        './freezeObject',
+        './Math'
     ], function(
         Check,
         defaultValue,
@@ -1987,12 +2009,10 @@ define('Core/Cartesian3',[
             } else {
                 result = Cartesian3.clone(Cartesian3.UNIT_Z, result);
             }
+        } else if (f.y <= f.z) {
+            result = Cartesian3.clone(Cartesian3.UNIT_Y, result);
         } else {
-            if (f.y <= f.z) {
-                result = Cartesian3.clone(Cartesian3.UNIT_Y, result);
-            } else {
-                result = Cartesian3.clone(Cartesian3.UNIT_Z, result);
-            }
+            result = Cartesian3.clone(Cartesian3.UNIT_Z, result);
         }
 
         return result;
@@ -2354,7 +2374,6 @@ define('Core/Cartesian3',[
     return Cartesian3;
 });
 
-/*global define*/
 define('Core/Intersect',[
         './freezeObject'
     ], function(
@@ -2398,7 +2417,6 @@ define('Core/Intersect',[
     return freezeObject(Intersect);
 });
 
-/*global define*/
 define('Core/AxisAlignedBoundingBox',[
         './Cartesian3',
         './Check',
@@ -2627,7 +2645,6 @@ define('Core/AxisAlignedBoundingBox',[
     return AxisAlignedBoundingBox;
 });
 
-/*global define*/
 define('Core/scaleToGeodeticSurface',[
         './Cartesian3',
         './defined',
@@ -2762,7 +2779,6 @@ define('Core/scaleToGeodeticSurface',[
     return scaleToGeodeticSurface;
 });
 
-/*global define*/
 define('Core/Cartographic',[
         './Cartesian3',
         './Check',
@@ -3019,7 +3035,6 @@ define('Core/Cartographic',[
     return Cartographic;
 });
 
-/*global define*/
 define('Core/defineProperties',[
         './defined'
     ], function(
@@ -3054,11 +3069,10 @@ define('Core/defineProperties',[
     return defineProperties;
 });
 
-/*global define*/
 define('Core/Ellipsoid',[
-        './Check',
         './Cartesian3',
         './Cartographic',
+        './Check',
         './defaultValue',
         './defined',
         './defineProperties',
@@ -3067,9 +3081,9 @@ define('Core/Ellipsoid',[
         './Math',
         './scaleToGeodeticSurface'
     ], function(
-        Check,
         Cartesian3,
         Cartographic,
+        Check,
         defaultValue,
         defined,
         defineProperties,
@@ -3113,7 +3127,7 @@ define('Core/Ellipsoid',[
         ellipsoid._centerToleranceSquared = CesiumMath.EPSILON1;
 
         if (ellipsoid._radiiSquared.z !== 0) {
-            ellipsoid._sqauredXOverSquaredZ = ellipsoid._radiiSquared.x / ellipsoid._radiiSquared.z;
+            ellipsoid._squaredXOverSquaredZ = ellipsoid._radiiSquared.x / ellipsoid._radiiSquared.z;
         }
     }
 
@@ -3146,7 +3160,7 @@ define('Core/Ellipsoid',[
         this._minimumRadius = undefined;
         this._maximumRadius = undefined;
         this._centerToleranceSquared = undefined;
-        this._sqauredXOverSquaredZ = undefined;
+        this._squaredXOverSquaredZ = undefined;
 
         initialize(this, x, y, z);
     }
@@ -3653,9 +3667,9 @@ define('Core/Ellipsoid',[
      *                                In earth case, with common earth datums, there is no need for this buffer since the intersection point is always (relatively) very close to the center.
      *                                In WGS84 datum, intersection point is at max z = +-42841.31151331382 (0.673% of z-axis).
      *                                Intersection point could be outside the ellipsoid if the ratio of MajorAxis / AxisOfRotation is bigger than the square root of 2
-     * @param {Cartesian} [result] The cartesian to which to copy the result, or undefined to create and
+     * @param {Cartesian3} [result] The cartesian to which to copy the result, or undefined to create and
      *        return a new instance.
-     * @returns {Cartesian | undefined} the intersection point if it's inside the ellipsoid, undefined otherwise
+     * @returns {Cartesian3 | undefined} the intersection point if it's inside the ellipsoid, undefined otherwise
      *
      * @exception {DeveloperError} position is required.
      * @exception {DeveloperError} Ellipsoid must be an ellipsoid of revolution (radii.x == radii.y).
@@ -3667,12 +3681,12 @@ define('Core/Ellipsoid',[
         if (!CesiumMath.equalsEpsilon(this._radii.x, this._radii.y, CesiumMath.EPSILON15)) {
             throw new DeveloperError('Ellipsoid must be an ellipsoid of revolution (radii.x == radii.y)');
         }
-        
+
         Check.typeOf.number.greaterThan('Ellipsoid.radii.z', this._radii.z, 0);
         
         buffer = defaultValue(buffer, 0.0);
 
-        var sqauredXOverSquaredZ = this._sqauredXOverSquaredZ;
+        var squaredXOverSquaredZ = this._squaredXOverSquaredZ;
 
         if (!defined(result)) {
             result = new Cartesian3();
@@ -3680,7 +3694,7 @@ define('Core/Ellipsoid',[
 
         result.x = 0.0;
         result.y = 0.0;
-        result.z = position.z * (1 - sqauredXOverSquaredZ);
+        result.z = position.z * (1 - squaredXOverSquaredZ);
 
         if (Math.abs(result.z) >= this._radii.z - buffer) {
             return undefined;
@@ -3692,7 +3706,6 @@ define('Core/Ellipsoid',[
     return Ellipsoid;
 });
 
-/*global define*/
 define('Core/GeographicProjection',[
         './Cartesian3',
         './Cartographic',
@@ -3810,7 +3823,6 @@ define('Core/GeographicProjection',[
     return GeographicProjection;
 });
 
-/*global define*/
 define('Core/Interval',[
         './defaultValue'
     ], function(
@@ -3843,7 +3855,6 @@ define('Core/Interval',[
     return Interval;
 });
 
-/*global define*/
 define('Core/Matrix3',[
         './Cartesian3',
         './Check',
@@ -5274,7 +5285,6 @@ define('Core/Matrix3',[
     return Matrix3;
 });
 
-/*global define*/
 define('Core/Cartesian4',[
         './Check',
         './defaultValue',
@@ -6048,7 +6058,6 @@ define('Core/Cartesian4',[
     return Cartesian4;
 });
 
-/*global define*/
 define('Core/RuntimeError',[
         './defined'
     ], function(
@@ -6121,7 +6130,6 @@ define('Core/RuntimeError',[
     return RuntimeError;
 });
 
-/*global define*/
 define('Core/Matrix4',[
         './Cartesian3',
         './Cartesian4',
@@ -8643,7 +8651,6 @@ define('Core/Matrix4',[
     return Matrix4;
 });
 
-/*global define*/
 define('Core/Rectangle',[
         './Cartographic',
         './Check',
@@ -8925,7 +8932,7 @@ define('Core/Rectangle',[
     /**
      * Creates the smallest possible Rectangle that encloses all positions in the provided array.
      *
-     * @param {Cartesian[]} cartesians The list of Cartesian instances.
+     * @param {Cartesian3[]} cartesians The list of Cartesian instances.
      * @param {Ellipsoid} [ellipsoid=Ellipsoid.WGS84] The ellipsoid the cartesians are on.
      * @param {Rectangle} [result] The object onto which to store the result, or undefined if a new instance should be created.
      * @returns {Rectangle} The modified result parameter or a new Rectangle instance if none was provided.
@@ -9471,7 +9478,6 @@ define('Core/Rectangle',[
     return Rectangle;
 });
 
-/*global define*/
 define('Core/BoundingSphere',[
         './Cartesian3',
         './Cartographic',
@@ -9574,7 +9580,8 @@ define('Core/BoundingSphere',[
         var zMax = Cartesian3.clone(currentPos, fromPointsZMax);
 
         var numPositions = positions.length;
-        for (var i = 1; i < numPositions; i++) {
+        var i;
+        for (i = 1; i < numPositions; i++) {
             Cartesian3.clone(positions[i], currentPos);
 
             var x = currentPos.x;
@@ -9836,7 +9843,8 @@ define('Core/BoundingSphere',[
         var zMax = Cartesian3.clone(currentPos, fromPointsZMax);
 
         var numElements = positions.length;
-        for (var i = 0; i < numElements; i += stride) {
+        var i;
+        for (i = 0; i < numElements; i += stride) {
             var x = positions[i] + center.x;
             var y = positions[i + 1] + center.y;
             var z = positions[i + 2] + center.z;
@@ -9993,7 +10001,8 @@ define('Core/BoundingSphere',[
         var zMax = Cartesian3.clone(currentPos, fromPointsZMax);
 
         var numElements = positionsHigh.length;
-        for (var i = 0; i < numElements; i += 3) {
+        var i;
+        for (i = 0; i < numElements; i += 3) {
             var x = positionsHigh[i] + positionsLow[i];
             var y = positionsHigh[i + 1] + positionsLow[i + 1];
             var z = positionsHigh[i + 2] + positionsLow[i + 2];
@@ -10190,7 +10199,8 @@ define('Core/BoundingSphere',[
         }
 
         var positions = [];
-        for (var i = 0; i < length; i++) {
+        var i;
+        for (i = 0; i < length; i++) {
             positions.push(boundingSpheres[i].center);
         }
 
@@ -10739,7 +10749,6 @@ define('Core/BoundingSphere',[
     return BoundingSphere;
 });
 
-/*global define*/
 define('Core/Cartesian2',[
         './Check',
         './defaultValue',
@@ -11438,22 +11447,21 @@ define('Core/Cartesian2',[
     return Cartesian2;
 });
 
-/*global define*/
 define('Core/EllipsoidalOccluder',[
         './BoundingSphere',
         './Cartesian3',
+        './Check',
         './defaultValue',
         './defined',
         './defineProperties',
-        './DeveloperError',
         './Rectangle'
     ], function(
         BoundingSphere,
         Cartesian3,
+        Check,
         defaultValue,
         defined,
         defineProperties,
-        DeveloperError,
         Rectangle) {
     'use strict';
 
@@ -11481,9 +11489,7 @@ define('Core/EllipsoidalOccluder',[
      * @private
      */
     function EllipsoidalOccluder(ellipsoid, cameraPosition) {
-                if (!defined(ellipsoid)) {
-            throw new DeveloperError('ellipsoid is required.');
-        }
+                Check.typeOf.object('ellipsoid', ellipsoid);
         
         this._ellipsoid = ellipsoid;
         this._cameraPosition = new Cartesian3();
@@ -11596,12 +11602,8 @@ define('Core/EllipsoidalOccluder',[
      * @returns {Cartesian3} The computed horizon culling point, expressed in the ellipsoid-scaled space.
      */
     EllipsoidalOccluder.prototype.computeHorizonCullingPoint = function(directionToPoint, positions, result) {
-                if (!defined(directionToPoint)) {
-            throw new DeveloperError('directionToPoint is required');
-        }
-        if (!defined(positions)) {
-            throw new DeveloperError('positions is required');
-        }
+                Check.typeOf.object('directionToPoint', directionToPoint);
+        Check.defined('positions', positions);
         
         if (!defined(result)) {
             result = new Cartesian3();
@@ -11641,15 +11643,9 @@ define('Core/EllipsoidalOccluder',[
      * @returns {Cartesian3} The computed horizon culling point, expressed in the ellipsoid-scaled space.
      */
     EllipsoidalOccluder.prototype.computeHorizonCullingPointFromVertices = function(directionToPoint, vertices, stride, center, result) {
-                if (!defined(directionToPoint)) {
-            throw new DeveloperError('directionToPoint is required');
-        }
-        if (!defined(vertices)) {
-            throw new DeveloperError('vertices is required');
-        }
-        if (!defined(stride)) {
-            throw new DeveloperError('stride is required');
-        }
+                Check.typeOf.object('directionToPoint', directionToPoint);
+        Check.defined('vertices', vertices);
+        Check.typeOf.number('stride', stride);
         
         if (!defined(result)) {
             result = new Cartesian3();
@@ -11687,9 +11683,7 @@ define('Core/EllipsoidalOccluder',[
      * @returns {Cartesian3} The computed horizon culling point, expressed in the ellipsoid-scaled space.
      */
     EllipsoidalOccluder.prototype.computeHorizonCullingPointFromRectangle = function(rectangle, ellipsoid, result) {
-                if (!defined(rectangle)) {
-            throw new DeveloperError('rectangle is required.');
-        }
+                Check.typeOf.object('rectangle', rectangle);
         
         var positions = Rectangle.subsample(rectangle, ellipsoid, 0.0, subsampleScratch);
         var bs = BoundingSphere.fromPoints(positions);
@@ -11748,7 +11742,6 @@ define('Core/EllipsoidalOccluder',[
     return EllipsoidalOccluder;
 });
 
-/*global define*/
 define('Core/QuadraticRealPolynomial',[
         './DeveloperError',
         './Math'
@@ -11884,7 +11877,6 @@ define('Core/QuadraticRealPolynomial',[
     return QuadraticRealPolynomial;
 });
 
-/*global define*/
 define('Core/CubicRealPolynomial',[
         './DeveloperError',
         './QuadraticRealPolynomial'
@@ -12121,7 +12113,6 @@ define('Core/CubicRealPolynomial',[
     return CubicRealPolynomial;
 });
 
-/*global define*/
 define('Core/QuarticRealPolynomial',[
         './CubicRealPolynomial',
         './DeveloperError',
@@ -12445,7 +12436,6 @@ define('Core/QuarticRealPolynomial',[
     return QuarticRealPolynomial;
 });
 
-/*global define*/
 define('Core/Ray',[
         './Cartesian3',
         './defaultValue',
@@ -12519,7 +12509,6 @@ define('Core/Ray',[
     return Ray;
 });
 
-/*global define*/
 define('Core/IntersectionTests',[
         './Cartesian3',
         './Cartographic',
@@ -13410,19 +13399,18 @@ define('Core/IntersectionTests',[
     return IntersectionTests;
 });
 
-/*global define*/
 define('Core/Plane',[
         './Cartesian3',
         './defined',
         './DeveloperError',
-        './Math',
-        './freezeObject'
+        './freezeObject',
+        './Math'
     ], function(
         Cartesian3,
         defined,
         DeveloperError,
-        CesiumMath,
-        freezeObject) {
+        freezeObject,
+        CesiumMath) {
     'use strict';
 
     /**
@@ -14345,119 +14333,6 @@ define('ThirdParty/when',[],function () {
 	// Boilerplate for AMD, Node, and browser global
 );
 
-/*global define*/
-define('Core/oneTimeWarning',[
-        './defaultValue',
-        './defined',
-        './DeveloperError'
-    ], function(
-        defaultValue,
-        defined,
-        DeveloperError) {
-    "use strict";
-
-    var warnings = {};
-
-    /**
-     * Logs a one time message to the console.  Use this function instead of
-     * <code>console.log</code> directly since this does not log duplicate messages
-     * unless it is called from multiple workers.
-     *
-     * @exports oneTimeWarning
-     *
-     * @param {String} identifier The unique identifier for this warning.
-     * @param {String} [message=identifier] The message to log to the console.
-     *
-     * @example
-     * for(var i=0;i<foo.length;++i) {
-     *    if (!defined(foo[i].bar)) {
-     *       // Something that can be recovered from but may happen a lot
-     *       oneTimeWarning('foo.bar undefined', 'foo.bar is undefined. Setting to 0.');
-     *       foo[i].bar = 0;
-     *       // ...
-     *    }
-     * }
-     *
-     * @private
-     */
-    function oneTimeWarning(identifier, message) {
-                if (!defined(identifier)) {
-            throw new DeveloperError('identifier is required.');
-        }
-        
-        if (!defined(warnings[identifier])) {
-            warnings[identifier] = true;
-            console.warn(defaultValue(message, identifier));
-        }
-    }
-
-    oneTimeWarning.geometryOutlines = 'Entity geometry outlines are unsupported on terrain. Outlines will be disabled. To enable outlines, disable geometry terrain clamping by explicitly setting height to 0.';
-
-    return oneTimeWarning;
-});
-
-/*global define*/
-define('Core/deprecationWarning',[
-        './defined',
-        './DeveloperError',
-        './oneTimeWarning'
-    ], function(
-        defined,
-        DeveloperError,
-        oneTimeWarning) {
-    'use strict';
-    
-    /**
-     * Logs a deprecation message to the console.  Use this function instead of
-     * <code>console.log</code> directly since this does not log duplicate messages
-     * unless it is called from multiple workers.
-     *
-     * @exports deprecationWarning
-     *
-     * @param {String} identifier The unique identifier for this deprecated API.
-     * @param {String} message The message to log to the console.
-     *
-     * @example
-     * // Deprecated function or class
-     * function Foo() {
-     *    deprecationWarning('Foo', 'Foo was deprecated in Cesium 1.01.  It will be removed in 1.03.  Use newFoo instead.');
-     *    // ...
-     * }
-     *
-     * // Deprecated function
-     * Bar.prototype.func = function() {
-     *    deprecationWarning('Bar.func', 'Bar.func() was deprecated in Cesium 1.01.  It will be removed in 1.03.  Use Bar.newFunc() instead.');
-     *    // ...
-     * };
-     *
-     * // Deprecated property
-     * defineProperties(Bar.prototype, {
-     *     prop : {
-     *         get : function() {
-     *             deprecationWarning('Bar.prop', 'Bar.prop was deprecated in Cesium 1.01.  It will be removed in 1.03.  Use Bar.newProp instead.');
-     *             // ...
-     *         },
-     *         set : function(value) {
-     *             deprecationWarning('Bar.prop', 'Bar.prop was deprecated in Cesium 1.01.  It will be removed in 1.03.  Use Bar.newProp instead.');
-     *             // ...
-     *         }
-     *     }
-     * });
-     *
-     * @private
-     */
-    function deprecationWarning(identifier, message) {
-                if (!defined(identifier) || !defined(message)) {
-            throw new DeveloperError('identifier and message are required.');
-        }
-        
-        oneTimeWarning(identifier, message);
-    }
-
-    return deprecationWarning;
-});
-
-/*global define*/
 define('Core/binarySearch',[
         './Check',
         './defined'
@@ -14533,7 +14408,6 @@ define('Core/binarySearch',[
     return binarySearch;
 });
 
-/*global define*/
 define('Core/EarthOrientationParametersSample',[],function() {
     'use strict';
 
@@ -14713,7 +14587,6 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 
-/*global define*/
 define('ThirdParty/sprintf',[],function() {
 
 function sprintf () {
@@ -14907,7 +14780,6 @@ function sprintf () {
 return sprintf;
 });
 
-/*global define*/
 define('Core/GregorianDate',[],function() {
     'use strict';
 
@@ -14965,7 +14837,6 @@ define('Core/GregorianDate',[],function() {
     return GregorianDate;
 });
 
-/*global define*/
 define('Core/isLeapYear',[
         './DeveloperError'
     ], function(
@@ -14994,7 +14865,6 @@ define('Core/isLeapYear',[
     return isLeapYear;
 });
 
-/*global define*/
 define('Core/LeapSecond',[],function() {
     'use strict';
 
@@ -15025,7 +14895,6 @@ define('Core/LeapSecond',[],function() {
     return LeapSecond;
 });
 
-/*global define*/
 define('Core/TimeConstants',[
         './freezeObject'
     ], function(
@@ -15118,7 +14987,6 @@ define('Core/TimeConstants',[
     return freezeObject(TimeConstants);
 });
 
-/*global define*/
 define('Core/TimeStandard',[
         './freezeObject'
     ], function(
@@ -15140,12 +15008,17 @@ define('Core/TimeStandard',[
          * <code>UTC = TAI - deltaT</code> where <code>deltaT</code> is the number of leap
          * seconds which have been introduced as of the time in TAI.
          *
+         * @type {Number}
+         * @constant
          */
         UTC : 0,
 
         /**
          * Represents the International Atomic Time (TAI) time standard.
          * TAI is the principal time standard to which the other time standards are related.
+         *
+         * @type {Number}
+         * @constant
          */
         TAI : 1
     };
@@ -15153,7 +15026,6 @@ define('Core/TimeStandard',[
     return freezeObject(TimeStandard);
 });
 
-/*global define*/
 define('Core/JulianDate',[
         '../ThirdParty/sprintf',
         './binarySearch',
@@ -15358,6 +15230,29 @@ define('Core/JulianDate',[
     }
 
     /**
+     * Creates a new instance from a GregorianDate.
+     *
+     * @param {GregorianDate} date A GregorianDate.
+     * @param {JulianDate} [result] An existing instance to use for the result.
+     * @returns {JulianDate} The modified result parameter or a new instance if none was provided.
+     *
+     * @exception {DeveloperError} date must be a valid GregorianDate.
+     */
+    JulianDate.fromGregorianDate = function(date, result) {
+                if (!(date instanceof GregorianDate)) {
+            throw new DeveloperError('date must be a valid GregorianDate.');
+        }
+        
+        var components = computeJulianDateComponents(date.year, date.month, date.day, date.hour, date.minute, date.second, date.millisecond);
+        if (!defined(result)) {
+            return new JulianDate(components[0], components[1], TimeStandard.UTC);
+        }
+        setComponents(components[0], components[1], result);
+        convertUtcToTai(result);
+        return result;
+    };
+
+    /**
      * Creates a new instance from a JavaScript Date.
      *
      * @param {Date} date A JavaScript Date.
@@ -15492,7 +15387,8 @@ define('Core/JulianDate',[
             throw new DeveloperError(iso8601ErrorMessage);
         }
         
-        //Not move onto the time string, which is much simpler.
+        //Now move onto the time string, which is much simpler.
+        //If no time is specified, it is considered the beginning of the day, UTC to match Javascript's implementation.
         var offsetIndex;
         if (defined(time)) {
             tokens = time.match(matchHoursMinutesSeconds);
@@ -15556,9 +15452,6 @@ define('Core/JulianDate',[
                 minute = minute + new Date(Date.UTC(year, month - 1, day, hour, minute)).getTimezoneOffset();
                 break;
             }
-        } else {
-            //If no time is specified, it is considered the beginning of the day, local time.
-            minute = minute + new Date(year, month - 1, day).getTimezoneOffset();
         }
 
         //ISO8601 denotes a leap second by any time having a seconds component of 60 seconds.
@@ -15765,17 +15658,17 @@ define('Core/JulianDate',[
         if (!defined(precision) && gDate.millisecond !== 0) {
             //Forces milliseconds into a number with at least 3 digits to whatever the default toString() precision is.
             millisecondStr = (gDate.millisecond * 0.01).toString().replace('.', '');
-            return sprintf("%04d-%02d-%02dT%02d:%02d:%02d.%sZ", gDate.year, gDate.month, gDate.day, gDate.hour, gDate.minute, gDate.second, millisecondStr);
+            return sprintf('%04d-%02d-%02dT%02d:%02d:%02d.%sZ', gDate.year, gDate.month, gDate.day, gDate.hour, gDate.minute, gDate.second, millisecondStr);
         }
 
         //Precision is either 0 or milliseconds is 0 with undefined precision, in either case, leave off milliseconds entirely
         if (!defined(precision) || precision === 0) {
-            return sprintf("%04d-%02d-%02dT%02d:%02d:%02dZ", gDate.year, gDate.month, gDate.day, gDate.hour, gDate.minute, gDate.second);
+            return sprintf('%04d-%02d-%02dT%02d:%02d:%02dZ', gDate.year, gDate.month, gDate.day, gDate.hour, gDate.minute, gDate.second);
         }
 
         //Forces milliseconds into a number with at least 3 digits to whatever the specified precision is.
         millisecondStr = (gDate.millisecond * 0.01).toFixed(precision).replace('.', '').slice(0, precision);
-        return sprintf("%04d-%02d-%02dT%02d:%02d:%02d.%sZ", gDate.year, gDate.month, gDate.day, gDate.hour, gDate.minute, gDate.second, millisecondStr);
+        return sprintf('%04d-%02d-%02dT%02d:%02d:%02d.%sZ', gDate.year, gDate.month, gDate.day, gDate.hour, gDate.minute, gDate.second, millisecondStr);
     };
 
     /**
@@ -16145,7 +16038,6 @@ define('Core/JulianDate',[
     return JulianDate;
 });
 
-/*global define*/
 define('Core/clone',[
         './defaultValue'
     ], function(
@@ -16185,10 +16077,119 @@ define('Core/clone',[
     return clone;
 });
 
-/*global define*/
+define('Core/oneTimeWarning',[
+        './defaultValue',
+        './defined',
+        './DeveloperError'
+    ], function(
+        defaultValue,
+        defined,
+        DeveloperError) {
+    'use strict';
+
+    var warnings = {};
+
+    /**
+     * Logs a one time message to the console.  Use this function instead of
+     * <code>console.log</code> directly since this does not log duplicate messages
+     * unless it is called from multiple workers.
+     *
+     * @exports oneTimeWarning
+     *
+     * @param {String} identifier The unique identifier for this warning.
+     * @param {String} [message=identifier] The message to log to the console.
+     *
+     * @example
+     * for(var i=0;i<foo.length;++i) {
+     *    if (!defined(foo[i].bar)) {
+     *       // Something that can be recovered from but may happen a lot
+     *       oneTimeWarning('foo.bar undefined', 'foo.bar is undefined. Setting to 0.');
+     *       foo[i].bar = 0;
+     *       // ...
+     *    }
+     * }
+     *
+     * @private
+     */
+    function oneTimeWarning(identifier, message) {
+                if (!defined(identifier)) {
+            throw new DeveloperError('identifier is required.');
+        }
+        
+        if (!defined(warnings[identifier])) {
+            warnings[identifier] = true;
+            console.warn(defaultValue(message, identifier));
+        }
+    }
+
+    oneTimeWarning.geometryOutlines = 'Entity geometry outlines are unsupported on terrain. Outlines will be disabled. To enable outlines, disable geometry terrain clamping by explicitly setting height to 0.';
+
+    return oneTimeWarning;
+});
+
+define('Core/deprecationWarning',[
+        './defined',
+        './DeveloperError',
+        './oneTimeWarning'
+    ], function(
+        defined,
+        DeveloperError,
+        oneTimeWarning) {
+    'use strict';
+
+    /**
+     * Logs a deprecation message to the console.  Use this function instead of
+     * <code>console.log</code> directly since this does not log duplicate messages
+     * unless it is called from multiple workers.
+     *
+     * @exports deprecationWarning
+     *
+     * @param {String} identifier The unique identifier for this deprecated API.
+     * @param {String} message The message to log to the console.
+     *
+     * @example
+     * // Deprecated function or class
+     * function Foo() {
+     *    deprecationWarning('Foo', 'Foo was deprecated in Cesium 1.01.  It will be removed in 1.03.  Use newFoo instead.');
+     *    // ...
+     * }
+     *
+     * // Deprecated function
+     * Bar.prototype.func = function() {
+     *    deprecationWarning('Bar.func', 'Bar.func() was deprecated in Cesium 1.01.  It will be removed in 1.03.  Use Bar.newFunc() instead.');
+     *    // ...
+     * };
+     *
+     * // Deprecated property
+     * defineProperties(Bar.prototype, {
+     *     prop : {
+     *         get : function() {
+     *             deprecationWarning('Bar.prop', 'Bar.prop was deprecated in Cesium 1.01.  It will be removed in 1.03.  Use Bar.newProp instead.');
+     *             // ...
+     *         },
+     *         set : function(value) {
+     *             deprecationWarning('Bar.prop', 'Bar.prop was deprecated in Cesium 1.01.  It will be removed in 1.03.  Use Bar.newProp instead.');
+     *             // ...
+     *         }
+     *     }
+     * });
+     *
+     * @private
+     */
+    function deprecationWarning(identifier, message) {
+                if (!defined(identifier) || !defined(message)) {
+            throw new DeveloperError('identifier and message are required.');
+        }
+        
+        oneTimeWarning(identifier, message);
+    }
+
+    return deprecationWarning;
+});
+
 define('Core/RequestState',[
         '../Core/freezeObject'
-], function(
+    ], function(
         freezeObject) {
     'use strict';
 
@@ -16250,7 +16251,6 @@ define('Core/RequestState',[
     return freezeObject(RequestState);
 });
 
-/*global define*/
 define('Core/RequestType',[
         '../Core/freezeObject'
     ], function(
@@ -16299,7 +16299,6 @@ define('Core/RequestType',[
     return freezeObject(RequestType);
 });
 
-/*global define*/
 define('Core/Request',[
         './defaultValue',
         './defined',
@@ -16474,7 +16473,6 @@ define('Core/Request',[
     return Request;
 });
 
-/*global define*/
 define('Core/parseResponseHeaders',[], function() {
     'use strict';
 
@@ -16488,7 +16486,7 @@ define('Core/parseResponseHeaders',[], function() {
      *                 described here: http://www.w3.org/TR/XMLHttpRequest/#the-getallresponseheaders()-method
      * @returns {Object} A dictionary of key/value pairs, where each key is the name of a header and the corresponding value
      *                   is that header's value.
-     * 
+     *
      * @private
      */
     function parseResponseHeaders(headerString) {
@@ -16518,7 +16516,6 @@ define('Core/parseResponseHeaders',[], function() {
     return parseResponseHeaders;
 });
 
-/*global define*/
 define('Core/RequestErrorEvent',[
         './defined',
         './parseResponseHeaders'
@@ -16585,292 +16582,6 @@ define('Core/RequestErrorEvent',[
     return RequestErrorEvent;
 });
 
-/*global define*/
-define('Core/Heap',[
-        './Check',
-        './defaultValue',
-        './defined',
-        './defineProperties'
-    ], function(
-        Check,
-        defaultValue,
-        defined,
-        defineProperties) {
-    'use strict';
-
-    /**
-     * Array implementation of a heap.
-     *
-     * @alias Heap
-     * @constructor
-     * @private
-     *
-     * @param {Object} options Object with the following properties:
-     * @param {Heap~ComparatorCallback} options.comparator The comparator to use for the heap. If comparator(a, b) is less than 0, sort a to a lower index than b, otherwise sort to a higher index.
-     */
-    function Heap(options) {
-                Check.typeOf.object('options', options);
-        Check.defined('options.comparator', options.comparator);
-        
-        this._comparator = options.comparator;
-        this._array = [];
-        this._length = 0;
-        this._maximumLength = undefined;
-    }
-
-    defineProperties(Heap.prototype, {
-        /**
-         * Gets the length of the heap.
-         *
-         * @memberof Heap.prototype
-         *
-         * @type {Number}
-         * @readonly
-         */
-        length : {
-            get : function() {
-                return this._length;
-            }
-        },
-
-        /**
-         * Gets the internal array.
-         *
-         * @memberof Heap.prototype
-         *
-         * @type {Array}
-         * @readonly
-         */
-        internalArray : {
-            get : function() {
-                return this._array;
-            }
-        },
-
-        /**
-         * Gets and sets the maximum length of the heap.
-         *
-         * @memberof Heap.prototype
-         *
-         * @type {Number}
-         */
-        maximumLength : {
-            get : function() {
-                return this._maximumLength;
-            },
-            set : function(value) {
-                this._maximumLength = value;
-                if (this._length > value && value > 0) {
-                    this._length = value;
-                    this._array.length = value;
-                }
-            }
-        },
-
-        /**
-         * The comparator to use for the heap. If comparator(a, b) is less than 0, sort a to a lower index than b, otherwise sort to a higher index.
-         *
-         * @memberof Heap.prototype
-         *
-         * @type {Heap~ComparatorCallback}
-         */
-        comparator : {
-            get : function() {
-                return this._comparator;
-            }
-        }
-    });
-
-    function swap(array, a, b) {
-        var temp = array[a];
-        array[a] = array[b];
-        array[b] = temp;
-    }
-
-    /**
-     * Resizes the internal array of the heap.
-     *
-     * @param {Number} [length] The length to resize internal array to. Defaults to the current length of the heap.
-     */
-    Heap.prototype.reserve = function(length) {
-        length = defaultValue(length, this._length);
-        this._array.length = length;
-    };
-
-    /**
-     * Update the heap so that index and all descendants satisfy the heap property.
-     *
-     * @param {Number} [index=0] The starting index to heapify from.
-     */
-    Heap.prototype.heapify = function(index) {
-        index = defaultValue(index, 0);
-        var length = this._length;
-        var comparator = this._comparator;
-        var array = this._array;
-        var candidate = -1;
-        var inserting = true;
-
-        while (inserting) {
-            var right = 2 * (index + 1);
-            var left = right - 1;
-
-            if (left < length && comparator(array[left], array[index]) < 0) {
-                candidate = left;
-            } else {
-                candidate = index;
-            }
-
-            if (right < length && comparator(array[right], array[candidate]) < 0) {
-                candidate = right;
-            }
-            if (candidate !== index) {
-                swap(array, candidate, index);
-                index = candidate;
-            } else {
-                inserting = false;
-            }
-        }
-    };
-
-    /**
-     * Resort the heap.
-     */
-    Heap.prototype.resort = function() {
-        var length = this._length;
-        for (var i = Math.ceil(length / 2); i >= 0; --i) {
-            this.heapify(i);
-        }
-    };
-
-    /**
-     * Insert an element into the heap. If the length would grow greater than maximumLength
-     * of the heap, extra elements are removed.
-     *
-     * @param {*} element The element to insert
-     *
-     * @return {*} The element that was removed from the heap if the heap is at full capacity.
-     */
-    Heap.prototype.insert = function(element) {
-                Check.defined('element', element);
-        
-        var array = this._array;
-        var comparator = this._comparator;
-        var maximumLength = this._maximumLength;
-
-        var index = this._length++;
-        if (index < array.length) {
-            array[index] = element;
-        } else {
-            array.push(element);
-        }
-
-        while (index !== 0) {
-            var parent = Math.floor((index - 1) / 2);
-            if (comparator(array[index], array[parent]) < 0) {
-                swap(array, index, parent);
-                index = parent;
-            } else {
-                break;
-            }
-        }
-
-        var removedElement;
-
-        if (defined(maximumLength) && (this._length > maximumLength)) {
-            removedElement = array[maximumLength];
-            this._length = maximumLength;
-        }
-
-        return removedElement;
-    };
-
-    /**
-     * Remove the element specified by index from the heap and return it.
-     *
-     * @param {Number} [index=0] The index to remove.
-     * @returns {*} The specified element of the heap.
-     */
-    Heap.prototype.pop = function(index) {
-        index = defaultValue(index, 0);
-        if (this._length === 0) {
-            return undefined;
-        }
-                Check.typeOf.number.lessThan('index', index, this._length);
-        
-        var array = this._array;
-        var root = array[index];
-        swap(array, index, --this._length);
-        this.heapify(index);
-        return root;
-    };
-
-    /**
-     * The comparator to use for the heap.
-     * @callback Heap~ComparatorCallback
-     * @param {*} a An element in the heap.
-     * @param {*} b An element in the heap.
-     * @returns {Number} If the result of the comparison is less than 0, sort a to a lower index than b, otherwise sort to a higher index.
-     */
-
-    return Heap;
-});
-
-/*global define*/
-define('Core/isBlobUri',[
-        './Check'
-    ], function(
-        Check) {
-    'use strict';
-
-    var blobUriRegex = /^blob:/i;
-
-    /**
-     * Determines if the specified uri is a blob uri.
-     *
-     * @exports isBlobUri
-     *
-     * @param {String} uri The uri to test.
-     * @returns {Boolean} true when the uri is a blob uri; otherwise, false.
-     *
-     * @private
-     */
-    function isBlobUri(uri) {
-                Check.typeOf.string('uri', uri);
-        
-        return blobUriRegex.test(uri);
-    }
-
-    return isBlobUri;
-});
-
-/*global define*/
-define('Core/isDataUri',[
-        './Check'
-    ], function(
-        Check) {
-    'use strict';
-
-    var dataUriRegex = /^data:/i;
-
-    /**
-     * Determines if the specified uri is a data uri.
-     *
-     * @exports isDataUri
-     *
-     * @param {String} uri The uri to test.
-     * @returns {Boolean} true when the uri is a data uri; otherwise, false.
-     *
-     * @private
-     */
-    function isDataUri(uri) {
-                Check.typeOf.string('uri', uri);
-        
-        return dataUriRegex.test(uri);
-    }
-
-    return isDataUri;
-});
-
 /**
  * @license
  *
@@ -16895,7 +16606,6 @@ define('Core/isDataUri',[
  *   limitations under the License.
  *
  */
-/*global define*/
 define('ThirdParty/Uri',[],function() {
 
 	/**
@@ -17148,29 +16858,311 @@ define('ThirdParty/Uri',[],function() {
 return URI;
 });
 
-/*global define*/
-define('Core/RequestScheduler',[
-        './clone',
+define('Core/Heap',[
         './Check',
+        './defaultValue',
+        './defined',
+        './defineProperties'
+    ], function(
+        Check,
+        defaultValue,
+        defined,
+        defineProperties) {
+    'use strict';
+
+    /**
+     * Array implementation of a heap.
+     *
+     * @alias Heap
+     * @constructor
+     * @private
+     *
+     * @param {Object} options Object with the following properties:
+     * @param {Heap~ComparatorCallback} options.comparator The comparator to use for the heap. If comparator(a, b) is less than 0, sort a to a lower index than b, otherwise sort to a higher index.
+     */
+    function Heap(options) {
+                Check.typeOf.object('options', options);
+        Check.defined('options.comparator', options.comparator);
+        
+        this._comparator = options.comparator;
+        this._array = [];
+        this._length = 0;
+        this._maximumLength = undefined;
+    }
+
+    defineProperties(Heap.prototype, {
+        /**
+         * Gets the length of the heap.
+         *
+         * @memberof Heap.prototype
+         *
+         * @type {Number}
+         * @readonly
+         */
+        length : {
+            get : function() {
+                return this._length;
+            }
+        },
+
+        /**
+         * Gets the internal array.
+         *
+         * @memberof Heap.prototype
+         *
+         * @type {Array}
+         * @readonly
+         */
+        internalArray : {
+            get : function() {
+                return this._array;
+            }
+        },
+
+        /**
+         * Gets and sets the maximum length of the heap.
+         *
+         * @memberof Heap.prototype
+         *
+         * @type {Number}
+         */
+        maximumLength : {
+            get : function() {
+                return this._maximumLength;
+            },
+            set : function(value) {
+                this._maximumLength = value;
+                if (this._length > value && value > 0) {
+                    this._length = value;
+                    this._array.length = value;
+                }
+            }
+        },
+
+        /**
+         * The comparator to use for the heap. If comparator(a, b) is less than 0, sort a to a lower index than b, otherwise sort to a higher index.
+         *
+         * @memberof Heap.prototype
+         *
+         * @type {Heap~ComparatorCallback}
+         */
+        comparator : {
+            get : function() {
+                return this._comparator;
+            }
+        }
+    });
+
+    function swap(array, a, b) {
+        var temp = array[a];
+        array[a] = array[b];
+        array[b] = temp;
+    }
+
+    /**
+     * Resizes the internal array of the heap.
+     *
+     * @param {Number} [length] The length to resize internal array to. Defaults to the current length of the heap.
+     */
+    Heap.prototype.reserve = function(length) {
+        length = defaultValue(length, this._length);
+        this._array.length = length;
+    };
+
+    /**
+     * Update the heap so that index and all descendants satisfy the heap property.
+     *
+     * @param {Number} [index=0] The starting index to heapify from.
+     */
+    Heap.prototype.heapify = function(index) {
+        index = defaultValue(index, 0);
+        var length = this._length;
+        var comparator = this._comparator;
+        var array = this._array;
+        var candidate = -1;
+        var inserting = true;
+
+        while (inserting) {
+            var right = 2 * (index + 1);
+            var left = right - 1;
+
+            if (left < length && comparator(array[left], array[index]) < 0) {
+                candidate = left;
+            } else {
+                candidate = index;
+            }
+
+            if (right < length && comparator(array[right], array[candidate]) < 0) {
+                candidate = right;
+            }
+            if (candidate !== index) {
+                swap(array, candidate, index);
+                index = candidate;
+            } else {
+                inserting = false;
+            }
+        }
+    };
+
+    /**
+     * Resort the heap.
+     */
+    Heap.prototype.resort = function() {
+        var length = this._length;
+        for (var i = Math.ceil(length / 2); i >= 0; --i) {
+            this.heapify(i);
+        }
+    };
+
+    /**
+     * Insert an element into the heap. If the length would grow greater than maximumLength
+     * of the heap, extra elements are removed.
+     *
+     * @param {*} element The element to insert
+     *
+     * @return {*} The element that was removed from the heap if the heap is at full capacity.
+     */
+    Heap.prototype.insert = function(element) {
+                Check.defined('element', element);
+        
+        var array = this._array;
+        var comparator = this._comparator;
+        var maximumLength = this._maximumLength;
+
+        var index = this._length++;
+        if (index < array.length) {
+            array[index] = element;
+        } else {
+            array.push(element);
+        }
+
+        while (index !== 0) {
+            var parent = Math.floor((index - 1) / 2);
+            if (comparator(array[index], array[parent]) < 0) {
+                swap(array, index, parent);
+                index = parent;
+            } else {
+                break;
+            }
+        }
+
+        var removedElement;
+
+        if (defined(maximumLength) && (this._length > maximumLength)) {
+            removedElement = array[maximumLength];
+            this._length = maximumLength;
+        }
+
+        return removedElement;
+    };
+
+    /**
+     * Remove the element specified by index from the heap and return it.
+     *
+     * @param {Number} [index=0] The index to remove.
+     * @returns {*} The specified element of the heap.
+     */
+    Heap.prototype.pop = function(index) {
+        index = defaultValue(index, 0);
+        if (this._length === 0) {
+            return undefined;
+        }
+                Check.typeOf.number.lessThan('index', index, this._length);
+        
+        var array = this._array;
+        var root = array[index];
+        swap(array, index, --this._length);
+        this.heapify(index);
+        return root;
+    };
+
+    /**
+     * The comparator to use for the heap.
+     * @callback Heap~ComparatorCallback
+     * @param {*} a An element in the heap.
+     * @param {*} b An element in the heap.
+     * @returns {Number} If the result of the comparison is less than 0, sort a to a lower index than b, otherwise sort to a higher index.
+     */
+
+    return Heap;
+});
+
+define('Core/isBlobUri',[
+        './Check'
+    ], function(
+        Check) {
+    'use strict';
+
+    var blobUriRegex = /^blob:/i;
+
+    /**
+     * Determines if the specified uri is a blob uri.
+     *
+     * @exports isBlobUri
+     *
+     * @param {String} uri The uri to test.
+     * @returns {Boolean} true when the uri is a blob uri; otherwise, false.
+     *
+     * @private
+     */
+    function isBlobUri(uri) {
+                Check.typeOf.string('uri', uri);
+        
+        return blobUriRegex.test(uri);
+    }
+
+    return isBlobUri;
+});
+
+define('Core/isDataUri',[
+        './Check'
+    ], function(
+        Check) {
+    'use strict';
+
+    var dataUriRegex = /^data:/i;
+
+    /**
+     * Determines if the specified uri is a data uri.
+     *
+     * @exports isDataUri
+     *
+     * @param {String} uri The uri to test.
+     * @returns {Boolean} true when the uri is a data uri; otherwise, false.
+     *
+     * @private
+     */
+    function isDataUri(uri) {
+                Check.typeOf.string('uri', uri);
+        
+        return dataUriRegex.test(uri);
+    }
+
+    return isDataUri;
+});
+
+define('Core/RequestScheduler',[
+        '../ThirdParty/Uri',
+        '../ThirdParty/when',
+        './Check',
+        './clone',
         './defined',
         './defineProperties',
         './Heap',
         './isBlobUri',
         './isDataUri',
-        './RequestState',
-        '../ThirdParty/Uri',
-        '../ThirdParty/when'
+        './RequestState'
     ], function(
-        clone,
+        Uri,
+        when,
         Check,
+        clone,
         defined,
         defineProperties,
         Heap,
         isBlobUri,
         isDataUri,
-        RequestState,
-        Uri,
-        when) {
+        RequestState) {
     'use strict';
 
     function sortRequests(a, b) {
@@ -17569,7 +17561,6 @@ define('Core/RequestScheduler',[
     return RequestScheduler;
 });
 
-/*global define*/
 define('Core/TrustedServers',[
         '../ThirdParty/Uri',
         './defined',
@@ -17579,7 +17570,7 @@ define('Core/TrustedServers',[
         defined,
         DeveloperError) {
     'use strict';
-    
+
     /**
      * A singleton that contains all of the servers that are trusted. Credentials will be sent with
      * any requests to these servers.
@@ -17714,11 +17705,10 @@ define('Core/TrustedServers',[
     TrustedServers.clear = function() {
         _servers = {};
     };
-    
+
     return TrustedServers;
 });
 
-/*global define*/
 define('Core/loadWithXhr',[
         '../ThirdParty/when',
         './Check',
@@ -17947,7 +17937,6 @@ define('Core/loadWithXhr',[
     return loadWithXhr;
 });
 
-/*global define*/
 define('Core/loadText',[
         './loadWithXhr'
     ], function(
@@ -17993,7 +17982,6 @@ define('Core/loadText',[
     return loadText;
 });
 
-/*global define*/
 define('Core/loadJson',[
         './clone',
         './defined',
@@ -18066,7 +18054,6 @@ define('Core/loadJson',[
     return loadJson;
 });
 
-/*global define*/
 define('Core/EarthOrientationParameters',[
         '../ThirdParty/when',
         './binarySearch',
@@ -18450,7 +18437,6 @@ define('Core/EarthOrientationParameters',[
     return EarthOrientationParameters;
 });
 
-/*global define*/
 define('Core/getAbsoluteUri',[
         '../ThirdParty/Uri',
         './defaultValue',
@@ -18488,7 +18474,6 @@ define('Core/getAbsoluteUri',[
     return getAbsoluteUri;
 });
 
-/*global define*/
 define('Core/joinUrls',[
         '../ThirdParty/Uri',
         './defaultValue',
@@ -18605,7 +18590,6 @@ define('Core/joinUrls',[
     return joinUrls;
 });
 
-/*global define*/
 define('Core/buildModuleUrl',[
         '../ThirdParty/Uri',
         './defined',
@@ -18713,7 +18697,6 @@ define('Core/buildModuleUrl',[
     return buildModuleUrl;
 });
 
-/*global define*/
 define('Core/Iau2006XysSample',[],function() {
     'use strict';
 
@@ -18752,7 +18735,6 @@ define('Core/Iau2006XysSample',[],function() {
     return Iau2006XysSample;
 });
 
-/*global define*/
 define('Core/Iau2006XysData',[
         '../ThirdParty/when',
         './buildModuleUrl',
@@ -19018,7 +19000,6 @@ define('Core/Iau2006XysData',[
     return Iau2006XysData;
 });
 
-/*global define*/
 define('Core/Fullscreen',[
         './defined',
         './defineProperties'
@@ -19274,7 +19255,6 @@ define('Core/Fullscreen',[
     return Fullscreen;
 });
 
-/*global define*/
 define('Core/FeatureDetection',[
         './defaultValue',
         './defined',
@@ -19537,7 +19517,6 @@ define('Core/FeatureDetection',[
     return FeatureDetection;
 });
 
-/*global define*/
 define('Core/HeadingPitchRoll',[
         './defaultValue',
         './defined',
@@ -19548,7 +19527,7 @@ define('Core/HeadingPitchRoll',[
         defined,
         DeveloperError,
         CesiumMath) {
-    "use strict";
+    'use strict';
 
     /**
      * A rotation expressed as a heading, pitch, and roll. Heading is the rotation about the
@@ -19724,13 +19703,11 @@ define('Core/HeadingPitchRoll',[
     return HeadingPitchRoll;
 });
 
-/*global define*/
 define('Core/Quaternion',[
         './Cartesian3',
         './Check',
         './defaultValue',
         './defined',
-        './deprecationWarning',
         './FeatureDetection',
         './freezeObject',
         './HeadingPitchRoll',
@@ -19741,7 +19718,6 @@ define('Core/Quaternion',[
         Check,
         defaultValue,
         defined,
-        deprecationWarning,
         FeatureDetection,
         freezeObject,
         HeadingPitchRoll,
@@ -19909,26 +19885,13 @@ define('Core/Quaternion',[
      * @param {Quaternion} [result] The object onto which to store the result.
      * @returns {Quaternion} The modified result parameter or a new Quaternion instance if none was provided.
      */
-    Quaternion.fromHeadingPitchRoll = function(headingOrHeadingPitchRoll, pitchOrResult, roll, result) {
-                if (headingOrHeadingPitchRoll instanceof HeadingPitchRoll) {
-            Check.typeOf.object('headingPitchRoll', headingOrHeadingPitchRoll);
-        } else {
-            Check.typeOf.number('heading', headingOrHeadingPitchRoll);
-            Check.typeOf.number('pitch', pitchOrResult);
-            Check.typeOf.number('roll', roll);
-        }
-                var hpr;
-        if (headingOrHeadingPitchRoll instanceof HeadingPitchRoll) {
-            hpr = headingOrHeadingPitchRoll;
-            result = pitchOrResult;
-        } else {
-            deprecationWarning('Quaternion.fromHeadingPitchRoll(heading, pitch, roll,result)', 'The method was deprecated in Cesium 1.32 and will be removed in version 1.33. ' + 'Use Quaternion.fromHeadingPitchRoll(hpr,result) where hpr is a HeadingPitchRoll');
-            hpr = new HeadingPitchRoll(headingOrHeadingPitchRoll, pitchOrResult, roll);
-        }
-        scratchRollQuaternion = Quaternion.fromAxisAngle(Cartesian3.UNIT_X, hpr.roll, scratchHPRQuaternion);
-        scratchPitchQuaternion = Quaternion.fromAxisAngle(Cartesian3.UNIT_Y, -hpr.pitch, result);
+    Quaternion.fromHeadingPitchRoll = function(headingPitchRoll, result) {
+                Check.typeOf.object('headingPitchRoll', headingPitchRoll);
+        
+        scratchRollQuaternion = Quaternion.fromAxisAngle(Cartesian3.UNIT_X, headingPitchRoll.roll, scratchHPRQuaternion);
+        scratchPitchQuaternion = Quaternion.fromAxisAngle(Cartesian3.UNIT_Y, -headingPitchRoll.pitch, result);
         result = Quaternion.multiply(scratchPitchQuaternion, scratchRollQuaternion, scratchPitchQuaternion);
-        scratchHeadingQuaternion = Quaternion.fromAxisAngle(Cartesian3.UNIT_Z, -hpr.heading, scratchHPRQuaternion);
+        scratchHeadingQuaternion = Quaternion.fromAxisAngle(Cartesian3.UNIT_Z, -headingPitchRoll.heading, scratchHPRQuaternion);
         return Quaternion.multiply(scratchHeadingQuaternion, result, result);
     };
 
@@ -20724,7 +20687,6 @@ define('Core/Quaternion',[
     return Quaternion;
 });
 
-/*global define*/
 define('Core/Transforms',[
         '../ThirdParty/when',
         './Cartesian2',
@@ -20734,7 +20696,6 @@ define('Core/Transforms',[
         './Check',
         './defaultValue',
         './defined',
-        './deprecationWarning',
         './DeveloperError',
         './EarthOrientationParameters',
         './EarthOrientationParametersSample',
@@ -20756,7 +20717,6 @@ define('Core/Transforms',[
         Check,
         defaultValue,
         defined,
-        deprecationWarning,
         DeveloperError,
         EarthOrientationParameters,
         EarthOrientationParametersSample,
@@ -20947,6 +20907,7 @@ define('Core/Transforms',[
      * <li>The <code>z</code> axis points in the direction of the ellipsoid surface normal which passes through the position.</li>
      * </ul>
      *
+     * @function
      * @param {Cartesian3} origin The center point of the local reference frame.
      * @param {Ellipsoid} [ellipsoid=Ellipsoid.WGS84] The ellipsoid whose fixed frame is used in the transformation.
      * @param {Matrix4} [result] The object onto which to store the result.
@@ -20969,6 +20930,7 @@ define('Core/Transforms',[
      * <li>The <code>z</code> axis points in the opposite direction of the ellipsoid surface normal which passes through the position.</li>
      * </ul>
      *
+     * @function
      * @param {Cartesian3} origin The center point of the local reference frame.
      * @param {Ellipsoid} [ellipsoid=Ellipsoid.WGS84] The ellipsoid whose fixed frame is used in the transformation.
      * @param {Matrix4} [result] The object onto which to store the result.
@@ -20991,6 +20953,7 @@ define('Core/Transforms',[
      * <li>The <code>z</code> axis points in the local east direction.</li>
      * </ul>
      *
+     * @function
      * @param {Cartesian3} origin The center point of the local reference frame.
      * @param {Ellipsoid} [ellipsoid=Ellipsoid.WGS84] The ellipsoid whose fixed frame is used in the transformation.
      * @param {Matrix4} [result] The object onto which to store the result.
@@ -21004,26 +20967,27 @@ define('Core/Transforms',[
     Transforms.northUpEastToFixedFrame = Transforms.localFrameToFixedFrameGenerator('north','up');
 
     /**
-    * Computes a 4x4 transformation matrix from a reference frame with an north-west-up axes
-    * centered at the provided origin to the provided ellipsoid's fixed reference frame.
-    * The local axes are defined as:
-    * <ul>
-    * <li>The <code>x</code> axis points in the local north direction.</li>
-    * <li>The <code>y</code> axis points in the local west direction.</li>
-    * <li>The <code>z</code> axis points in the direction of the ellipsoid surface normal which passes through the position.</li>
-    * </ul>
-    *
-    * @param {Cartesian3} origin The center point of the local reference frame.
-    * @param {Ellipsoid} [ellipsoid=Ellipsoid.WGS84] The ellipsoid whose fixed frame is used in the transformation.
-    * @param {Matrix4} [result] The object onto which to store the result.
-    * @returns {Matrix4} The modified result parameter or a new Matrix4 instance if none was provided.
-    *
-    * @example
-    * // Get the transform from local north-West-Up at cartographic (0.0, 0.0) to Earth's fixed frame.
-    * var center = Cesium.Cartesian3.fromDegrees(0.0, 0.0);
-    * var transform = Cesium.Transforms.northWestUpToFixedFrame(center);
-    */
-   Transforms.northWestUpToFixedFrame = Transforms.localFrameToFixedFrameGenerator('north','west');
+     * Computes a 4x4 transformation matrix from a reference frame with an north-west-up axes
+     * centered at the provided origin to the provided ellipsoid's fixed reference frame.
+     * The local axes are defined as:
+     * <ul>
+     * <li>The <code>x</code> axis points in the local north direction.</li>
+     * <li>The <code>y</code> axis points in the local west direction.</li>
+     * <li>The <code>z</code> axis points in the direction of the ellipsoid surface normal which passes through the position.</li>
+     * </ul>
+     *
+     * @function
+     * @param {Cartesian3} origin The center point of the local reference frame.
+     * @param {Ellipsoid} [ellipsoid=Ellipsoid.WGS84] The ellipsoid whose fixed frame is used in the transformation.
+     * @param {Matrix4} [result] The object onto which to store the result.
+     * @returns {Matrix4} The modified result parameter or a new Matrix4 instance if none was provided.
+     *
+      * @example
+     * // Get the transform from local north-West-Up at cartographic (0.0, 0.0) to Earth's fixed frame.
+     * var center = Cesium.Cartesian3.fromDegrees(0.0, 0.0);
+     * var transform = Cesium.Transforms.northWestUpToFixedFrame(center);
+     */
+    Transforms.northWestUpToFixedFrame = Transforms.localFrameToFixedFrameGenerator('north','west');
 
     var scratchHPRQuaternion = new Quaternion();
     var scratchScale = new Cartesian3(1.0, 1.0, 1.0);
@@ -21038,7 +21002,7 @@ define('Core/Transforms',[
      * @param {Cartesian3} origin The center point of the local reference frame.
      * @param {HeadingPitchRoll} headingPitchRoll The heading, pitch, and roll.
      * @param {Ellipsoid} [ellipsoid=Ellipsoid.WGS84] The ellipsoid whose fixed frame is used in the transformation.
-     * @param {Transforms~LocalFrameToFixedFrame} [fixedFrameTransformOrResult=Transforms.eastNorthUpToFixedFrame] A 4x4 transformation
+     * @param {Transforms~LocalFrameToFixedFrame} [fixedFrameTransform=Transforms.eastNorthUpToFixedFrame] A 4x4 transformation
      *  matrix from a reference frame to the provided ellipsoid's fixed reference frame
      * @param {Matrix4} [result] The object onto which to store the result.
      * @returns {Matrix4} The modified result parameter or a new Matrix4 instance if none was provided.
@@ -21052,19 +21016,13 @@ define('Core/Transforms',[
      * var hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
      * var transform = Cesium.Transforms.headingPitchRollToFixedFrame(center, hpr);
      */
-    Transforms.headingPitchRollToFixedFrame = function(origin, headingPitchRoll, ellipsoid, fixedFrameTransformOrResult, result) {
+    Transforms.headingPitchRollToFixedFrame = function(origin, headingPitchRoll, ellipsoid, fixedFrameTransform, result) {
                 Check.typeOf.object( 'HeadingPitchRoll', headingPitchRoll);
         
-        // checks for required parameters happen in the called functions
-        if(fixedFrameTransformOrResult instanceof Matrix4){
-            result = fixedFrameTransformOrResult;
-            fixedFrameTransformOrResult = undefined;
-            deprecationWarning('Transforms.headingPitchRollToFixedFrame(origin, headingPitchRoll, ellipsoid, result)', 'The method was deprecated in Cesium 1.31 and will be removed in version 1.33. Transforms.headingPitchRollToFixedFrame(origin, headingPitchRoll, ellipsoid, fixedFrameTransform, result) where fixedFrameTransform is a a 4x4 transformation matrix (see Transforms.localFrameToFixedFrameGenerator)');
-        }
-        fixedFrameTransformOrResult = defaultValue(fixedFrameTransformOrResult,Transforms.eastNorthUpToFixedFrame);
+        fixedFrameTransform = defaultValue(fixedFrameTransform, Transforms.eastNorthUpToFixedFrame);
         var hprQuaternion = Quaternion.fromHeadingPitchRoll(headingPitchRoll, scratchHPRQuaternion);
         var hprMatrix = Matrix4.fromTranslationQuaternionRotationScale(Cartesian3.ZERO, hprQuaternion, scratchScale, scratchHPRMatrix4);
-        result = fixedFrameTransformOrResult(origin, ellipsoid, result);
+        result = fixedFrameTransform(origin, ellipsoid, result);
         return Matrix4.multiply(result, hprMatrix, result);
     };
 
@@ -21080,7 +21038,7 @@ define('Core/Transforms',[
      * @param {Cartesian3} origin The center point of the local reference frame.
      * @param {HeadingPitchRoll} headingPitchRoll The heading, pitch, and roll.
      * @param {Ellipsoid} [ellipsoid=Ellipsoid.WGS84] The ellipsoid whose fixed frame is used in the transformation.
-     * @param {Transforms~LocalFrameToFixedFrame} [fixedFrameTransformOrResult=Transforms.eastNorthUpToFixedFrame] A 4x4 transformation
+     * @param {Transforms~LocalFrameToFixedFrame} [fixedFrameTransform=Transforms.eastNorthUpToFixedFrame] A 4x4 transformation
      *  matrix from a reference frame to the provided ellipsoid's fixed reference frame
      * @param {Quaternion} [result] The object onto which to store the result.
      * @returns {Quaternion} The modified result parameter or a new Quaternion instance if none was provided.
@@ -21094,14 +21052,10 @@ define('Core/Transforms',[
      * var hpr = new HeadingPitchRoll(heading, pitch, roll);
      * var quaternion = Cesium.Transforms.headingPitchRollQuaternion(center, hpr);
      */
-    Transforms.headingPitchRollQuaternion = function(origin, headingPitchRoll, ellipsoid, fixedFrameTransformOrResult, result) {
+    Transforms.headingPitchRollQuaternion = function(origin, headingPitchRoll, ellipsoid, fixedFrameTransform, result) {
                 Check.typeOf.object( 'HeadingPitchRoll', headingPitchRoll);
-                if (fixedFrameTransformOrResult instanceof Quaternion) {
-            result = fixedFrameTransformOrResult;
-            fixedFrameTransformOrResult = undefined;
-            deprecationWarning('Transforms.headingPitchRollQuaternion(origin, headingPitchRoll, ellipsoid, result)', 'The method was deprecated in Cesium 1.31 and will be removed in version 1.33. Transforms.headingPitchRollQuaternion(origin, headingPitchRoll, ellipsoid, fixedFrameTransform, result) where fixedFrameTransform is a a 4x4 transformation matrix (see Transforms.localFrameToFixedFrameGenerator)');
-        }
-        var transform = Transforms.headingPitchRollToFixedFrame(origin, headingPitchRoll, ellipsoid,fixedFrameTransformOrResult, scratchENUMatrix4);
+        
+        var transform = Transforms.headingPitchRollToFixedFrame(origin, headingPitchRoll, ellipsoid, fixedFrameTransform, scratchENUMatrix4);
         var rotation = Matrix4.getRotation(transform, scratchHPRMatrix3);
         return Quaternion.fromRotationMatrix(rotation, result);
     };
@@ -21584,7 +21538,6 @@ define('Core/Transforms',[
     return Transforms;
 });
 
-/*global define*/
 define('Core/EllipsoidTangentPlane',[
         './AxisAlignedBoundingBox',
         './Cartesian2',
@@ -21918,7 +21871,6 @@ define('Core/EllipsoidTangentPlane',[
     return EllipsoidTangentPlane;
 });
 
-/*global define*/
 define('Core/OrientedBoundingBox',[
         './BoundingSphere',
         './Cartesian2',
@@ -22649,7 +22601,6 @@ define('Core/OrientedBoundingBox',[
     return OrientedBoundingBox;
 });
 
-/*global define*/
 define('Core/AttributeCompression',[
         './Cartesian2',
         './Cartesian3',
@@ -22916,7 +22867,6 @@ define('Core/AttributeCompression',[
     return AttributeCompression;
 });
 
-/*global define*/
 define('Core/WebGLConstants',[
         './freezeObject'
     ], function(
@@ -23531,7 +23481,6 @@ define('Core/WebGLConstants',[
     return freezeObject(WebGLConstants);
 });
 
-/*global define*/
 define('Core/ComponentDatatype',[
         './defaultValue',
         './defined',
@@ -23858,7 +23807,6 @@ define('Core/ComponentDatatype',[
     return freezeObject(ComponentDatatype);
 });
 
-/*global define*/
 define('Core/TerrainQuantization',[
         './freezeObject'
     ], function(
@@ -23893,7 +23841,6 @@ define('Core/TerrainQuantization',[
     return freezeObject(TerrainQuantization);
 });
 
-/*global define*/
 define('Core/TerrainEncoding',[
         './AttributeCompression',
         './Cartesian2',
@@ -24285,7 +24232,6 @@ define('Core/TerrainEncoding',[
     return TerrainEncoding;
 });
 
-/*global define*/
 define('Core/WebMercatorProjection',[
         './Cartesian3',
         './Cartographic',
@@ -24444,7 +24390,6 @@ define('Core/WebMercatorProjection',[
     return WebMercatorProjection;
 });
 
-/*global define*/
 define('Core/formatError',[
         './defined'
     ], function(
@@ -24482,7 +24427,6 @@ define('Core/formatError',[
     return formatError;
 });
 
-/*global define*/
 define('Workers/createTaskProcessorWorker',[
         '../Core/defaultValue',
         '../Core/defined',
@@ -24513,7 +24457,7 @@ define('Workers/createTaskProcessorWorker',[
      *
      * return Cesium.createTaskProcessorWorker(doCalculation);
      * // the resulting function is compatible with TaskProcessor
-     * 
+     *
      * @see TaskProcessor
      * @see {@link http://www.w3.org/TR/workers/|Web Workers}
      * @see {@link http://www.w3.org/TR/html5/common-dom-interfaces.html#transferable-objects|Transferable objects}
@@ -24605,45 +24549,44 @@ define('Workers/createTaskProcessorWorker',[
     return createTaskProcessorWorker;
 });
 
-/*global define*/
 define('Workers/createVerticesFromGoogleEarthEnterpriseBuffer',[
-    '../Core/AxisAlignedBoundingBox',
-    '../Core/BoundingSphere',
-    '../Core/Cartesian2',
-    '../Core/Cartesian3',
-    '../Core/Cartographic',
-    '../Core/defaultValue',
-    '../Core/defined',
-    '../Core/Ellipsoid',
-    '../Core/EllipsoidalOccluder',
-    '../Core/Math',
-    '../Core/Matrix4',
-    '../Core/OrientedBoundingBox',
-    '../Core/Rectangle',
-    '../Core/RuntimeError',
-    '../Core/TerrainEncoding',
-    '../Core/Transforms',
-    '../Core/WebMercatorProjection',
-    './createTaskProcessorWorker'
-], function(
-    AxisAlignedBoundingBox,
-    BoundingSphere,
-    Cartesian2,
-    Cartesian3,
-    Cartographic,
-    defaultValue,
-    defined,
-    Ellipsoid,
-    EllipsoidalOccluder,
-    CesiumMath,
-    Matrix4,
-    OrientedBoundingBox,
-    Rectangle,
-    RuntimeError,
-    TerrainEncoding,
-    Transforms,
-    WebMercatorProjection,
-    createTaskProcessorWorker) {
+        '../Core/AxisAlignedBoundingBox',
+        '../Core/BoundingSphere',
+        '../Core/Cartesian2',
+        '../Core/Cartesian3',
+        '../Core/Cartographic',
+        '../Core/defaultValue',
+        '../Core/defined',
+        '../Core/Ellipsoid',
+        '../Core/EllipsoidalOccluder',
+        '../Core/Math',
+        '../Core/Matrix4',
+        '../Core/OrientedBoundingBox',
+        '../Core/Rectangle',
+        '../Core/RuntimeError',
+        '../Core/TerrainEncoding',
+        '../Core/Transforms',
+        '../Core/WebMercatorProjection',
+        './createTaskProcessorWorker'
+    ], function(
+        AxisAlignedBoundingBox,
+        BoundingSphere,
+        Cartesian2,
+        Cartesian3,
+        Cartographic,
+        defaultValue,
+        defined,
+        Ellipsoid,
+        EllipsoidalOccluder,
+        CesiumMath,
+        Matrix4,
+        OrientedBoundingBox,
+        Rectangle,
+        RuntimeError,
+        TerrainEncoding,
+        Transforms,
+        WebMercatorProjection,
+        createTaskProcessorWorker) {
     'use strict';
 
     var sizeOfUint16 = Uint16Array.BYTES_PER_ELEMENT;
@@ -24754,7 +24697,8 @@ define('Workers/createVerticesFromGoogleEarthEnterpriseBuffer',[
         var size = 0;
         var indicesSize = 0;
         var quadSize;
-        for (var quad = 0; quad < 4; ++quad) {
+        var quad;
+        for (quad = 0; quad < 4; ++quad) {
             var o = offset;
             quadSize = dv.getUint32(o, true);
             o += sizeOfUint32;
@@ -24916,7 +24860,7 @@ define('Workers/createVerticesFromGoogleEarthEnterpriseBuffer',[
             }
 
             var facesElementCount = numFaces * 3;
-            for (i = 0; i < facesElementCount; ++i, ++indicesOffset) {
+            for (var j = 0; j < facesElementCount; ++j, ++indicesOffset) {
                 indices[indicesOffset] = indicesMapping[dv.getUint16(offset, true)];
                 offset += sizeOfUint16;
             }
@@ -25001,8 +24945,8 @@ define('Workers/createVerticesFromGoogleEarthEnterpriseBuffer',[
         var vertices = new Float32Array(size * encoding.getStride());
 
         var bufferIndex = 0;
-        for (var j = 0; j < size; ++j) {
-            bufferIndex = encoding.encode(vertices, bufferIndex, positions[j], uvs[j], heights[j], undefined, webMercatorTs[j]);
+        for (var k = 0; k < size; ++k) {
+            bufferIndex = encoding.encode(vertices, bufferIndex, positions[k], uvs[k], heights[k], undefined, webMercatorTs[k]);
         }
 
         return {

@@ -6,14 +6,14 @@ define(['backbone','./TileLayerModel'],function(Backbone,TileLayerModel){
         fetch : function(){
             var models = [
                 new TileLayerModel({
-                    url : 'datas/nyc/tileset.json',
+                    url : 'datas/nyc/tileset_min.json',
                     name : 'Image',
                     thumbnail : 'images/data/nyc.png',
                     title : '纽约市',
                     type : 'nyc'
                 }),
                 new TileLayerModel({
-				    url : 'datas/changsha/tileset.json',
+				    url : 'datas/changsha/tileset_min.json',
 				    name : 'Image',
 				    thumbnail : 'images/data/cs.png',
 				    title : '芦溪镇',

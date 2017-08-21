@@ -21,7 +21,6 @@
  * See https://github.com/AnalyticalGraphicsInc/cesium/blob/master/LICENSE.md for full licensing details.
  */
 (function () {
-/*global define*/
 define('Core/defined',[],function() {
     'use strict';
 
@@ -45,7 +44,6 @@ define('Core/defined',[],function() {
     return defined;
 });
 
-/*global define*/
 define('Core/DeveloperError',[
         './defined'
     ], function(
@@ -126,7 +124,6 @@ define('Core/DeveloperError',[
     return DeveloperError;
 });
 
-/*global define*/
 define('Core/Check',[
         './defined',
         './DeveloperError'
@@ -293,10 +290,26 @@ define('Core/Check',[
         }
     };
 
+    /**
+     * Throws if test1 and test2 is not typeof 'number' and not equal in value
+     *
+     * @param {String} name1 The name of the first variable being tested
+     * @param {String} name2 The name of the second variable being tested against
+     * @param {*} test1 The value to test
+     * @param {*} test2 The value to test against
+     * @exception {DeveloperError} test1 and test2 should be type of 'number' and be equal in value
+     */
+    Check.typeOf.number.equals = function (name1, name2, test1, test2) {
+        Check.typeOf.number(name1, test1);
+        Check.typeOf.number(name2, test2);
+        if (test1 !== test2) {
+            throw new DeveloperError(name1 + ' must be equal to ' + name2 + ', the actual values are ' + test1 + ' and ' + test2);
+        }
+    };
+
     return Check;
 });
 
-/*global define*/
 define('Core/freezeObject',[
         './defined'
     ], function(
@@ -322,7 +335,6 @@ define('Core/freezeObject',[
     return freezeObject;
 });
 
-/*global define*/
 define('Core/defaultValue',[
         './freezeObject'
     ], function(
@@ -343,7 +355,7 @@ define('Core/defaultValue',[
      * param = Cesium.defaultValue(param, 'default');
      */
     function defaultValue(a, b) {
-        if (a !== undefined) {
+        if (a !== undefined && a !== null) {
             return a;
         }
         return b;
@@ -562,7 +574,6 @@ MersenneTwister.prototype.random = function() {
 return MersenneTwister;
 });
 
-/*global define*/
 define('Core/Math',[
         '../ThirdParty/mersenne-twister',
         './defaultValue',
@@ -1276,7 +1287,7 @@ define('Core/Math',[
     };
 
     /**
-     * Generates a random number in the range of [0.0, 1.0)
+     * Generates a random floating point number in the range of [0.0, 1.0)
      * using a Mersenne twister.
      *
      * @returns {Number} A random number in the range of [0.0, 1.0).
@@ -1288,8 +1299,20 @@ define('Core/Math',[
         return randomNumberGenerator.random();
     };
 
+
     /**
-     * Computes <code>Math.acos(value)</acode>, but first clamps <code>value</code> to the range [-1.0, 1.0]
+     * Generates a random number between two numbers.
+     *
+     * @param {Number} min The minimum value.
+     * @param {Number} max The maximum value.
+     * @returns {Number} A random number between the min and max.
+     */
+    CesiumMath.randomBetween = function(min, max) {
+        return CesiumMath.nextRandomNumber() * (max - min) + min;
+    };
+
+    /**
+     * Computes <code>Math.acos(value)</code>, but first clamps <code>value</code> to the range [-1.0, 1.0]
      * so that the function will never return NaN.
      *
      * @param {Number} value The value for which to compute acos.
@@ -1304,7 +1327,7 @@ define('Core/Math',[
     };
 
     /**
-     * Computes <code>Math.asin(value)</acode>, but first clamps <code>value</code> to the range [-1.0, 1.0]
+     * Computes <code>Math.asin(value)</code>, but first clamps <code>value</code> to the range [-1.0, 1.0]
      * so that the function will never return NaN.
      *
      * @param {Number} value The value for which to compute asin.
@@ -1363,14 +1386,13 @@ define('Core/Math',[
     return CesiumMath;
 });
 
-/*global define*/
 define('Core/Cartesian3',[
-    './Check',
-    './defaultValue',
-    './defined',
-    './DeveloperError',
-    './freezeObject',
-    './Math'
+        './Check',
+        './defaultValue',
+        './defined',
+        './DeveloperError',
+        './freezeObject',
+        './Math'
     ], function(
         Check,
         defaultValue,
@@ -1987,12 +2009,10 @@ define('Core/Cartesian3',[
             } else {
                 result = Cartesian3.clone(Cartesian3.UNIT_Z, result);
             }
+        } else if (f.y <= f.z) {
+            result = Cartesian3.clone(Cartesian3.UNIT_Y, result);
         } else {
-            if (f.y <= f.z) {
-                result = Cartesian3.clone(Cartesian3.UNIT_Y, result);
-            } else {
-                result = Cartesian3.clone(Cartesian3.UNIT_Z, result);
-            }
+            result = Cartesian3.clone(Cartesian3.UNIT_Z, result);
         }
 
         return result;
@@ -2354,7 +2374,6 @@ define('Core/Cartesian3',[
     return Cartesian3;
 });
 
-/*global define*/
 define('Core/scaleToGeodeticSurface',[
         './Cartesian3',
         './defined',
@@ -2489,7 +2508,6 @@ define('Core/scaleToGeodeticSurface',[
     return scaleToGeodeticSurface;
 });
 
-/*global define*/
 define('Core/Cartographic',[
         './Cartesian3',
         './Check',
@@ -2746,7 +2764,6 @@ define('Core/Cartographic',[
     return Cartographic;
 });
 
-/*global define*/
 define('Core/defineProperties',[
         './defined'
     ], function(
@@ -2781,11 +2798,10 @@ define('Core/defineProperties',[
     return defineProperties;
 });
 
-/*global define*/
 define('Core/Ellipsoid',[
-        './Check',
         './Cartesian3',
         './Cartographic',
+        './Check',
         './defaultValue',
         './defined',
         './defineProperties',
@@ -2794,9 +2810,9 @@ define('Core/Ellipsoid',[
         './Math',
         './scaleToGeodeticSurface'
     ], function(
-        Check,
         Cartesian3,
         Cartographic,
+        Check,
         defaultValue,
         defined,
         defineProperties,
@@ -2840,7 +2856,7 @@ define('Core/Ellipsoid',[
         ellipsoid._centerToleranceSquared = CesiumMath.EPSILON1;
 
         if (ellipsoid._radiiSquared.z !== 0) {
-            ellipsoid._sqauredXOverSquaredZ = ellipsoid._radiiSquared.x / ellipsoid._radiiSquared.z;
+            ellipsoid._squaredXOverSquaredZ = ellipsoid._radiiSquared.x / ellipsoid._radiiSquared.z;
         }
     }
 
@@ -2873,7 +2889,7 @@ define('Core/Ellipsoid',[
         this._minimumRadius = undefined;
         this._maximumRadius = undefined;
         this._centerToleranceSquared = undefined;
-        this._sqauredXOverSquaredZ = undefined;
+        this._squaredXOverSquaredZ = undefined;
 
         initialize(this, x, y, z);
     }
@@ -3380,9 +3396,9 @@ define('Core/Ellipsoid',[
      *                                In earth case, with common earth datums, there is no need for this buffer since the intersection point is always (relatively) very close to the center.
      *                                In WGS84 datum, intersection point is at max z = +-42841.31151331382 (0.673% of z-axis).
      *                                Intersection point could be outside the ellipsoid if the ratio of MajorAxis / AxisOfRotation is bigger than the square root of 2
-     * @param {Cartesian} [result] The cartesian to which to copy the result, or undefined to create and
+     * @param {Cartesian3} [result] The cartesian to which to copy the result, or undefined to create and
      *        return a new instance.
-     * @returns {Cartesian | undefined} the intersection point if it's inside the ellipsoid, undefined otherwise
+     * @returns {Cartesian3 | undefined} the intersection point if it's inside the ellipsoid, undefined otherwise
      *
      * @exception {DeveloperError} position is required.
      * @exception {DeveloperError} Ellipsoid must be an ellipsoid of revolution (radii.x == radii.y).
@@ -3394,12 +3410,12 @@ define('Core/Ellipsoid',[
         if (!CesiumMath.equalsEpsilon(this._radii.x, this._radii.y, CesiumMath.EPSILON15)) {
             throw new DeveloperError('Ellipsoid must be an ellipsoid of revolution (radii.x == radii.y)');
         }
-        
+
         Check.typeOf.number.greaterThan('Ellipsoid.radii.z', this._radii.z, 0);
         
         buffer = defaultValue(buffer, 0.0);
 
-        var sqauredXOverSquaredZ = this._sqauredXOverSquaredZ;
+        var squaredXOverSquaredZ = this._squaredXOverSquaredZ;
 
         if (!defined(result)) {
             result = new Cartesian3();
@@ -3407,7 +3423,7 @@ define('Core/Ellipsoid',[
 
         result.x = 0.0;
         result.y = 0.0;
-        result.z = position.z * (1 - sqauredXOverSquaredZ);
+        result.z = position.z * (1 - squaredXOverSquaredZ);
 
         if (Math.abs(result.z) >= this._radii.z - buffer) {
             return undefined;
@@ -3419,7 +3435,6 @@ define('Core/Ellipsoid',[
     return Ellipsoid;
 });
 
-/*global define*/
 define('Core/GeographicProjection',[
         './Cartesian3',
         './Cartographic',
@@ -3537,7 +3552,6 @@ define('Core/GeographicProjection',[
     return GeographicProjection;
 });
 
-/*global define*/
 define('Core/Intersect',[
         './freezeObject'
     ], function(
@@ -3581,7 +3595,6 @@ define('Core/Intersect',[
     return freezeObject(Intersect);
 });
 
-/*global define*/
 define('Core/Interval',[
         './defaultValue'
     ], function(
@@ -3614,7 +3627,6 @@ define('Core/Interval',[
     return Interval;
 });
 
-/*global define*/
 define('Core/Matrix3',[
         './Cartesian3',
         './Check',
@@ -5045,7 +5057,6 @@ define('Core/Matrix3',[
     return Matrix3;
 });
 
-/*global define*/
 define('Core/Cartesian4',[
         './Check',
         './defaultValue',
@@ -5819,7 +5830,6 @@ define('Core/Cartesian4',[
     return Cartesian4;
 });
 
-/*global define*/
 define('Core/RuntimeError',[
         './defined'
     ], function(
@@ -5892,7 +5902,6 @@ define('Core/RuntimeError',[
     return RuntimeError;
 });
 
-/*global define*/
 define('Core/Matrix4',[
         './Cartesian3',
         './Cartesian4',
@@ -8414,7 +8423,6 @@ define('Core/Matrix4',[
     return Matrix4;
 });
 
-/*global define*/
 define('Core/Rectangle',[
         './Cartographic',
         './Check',
@@ -8696,7 +8704,7 @@ define('Core/Rectangle',[
     /**
      * Creates the smallest possible Rectangle that encloses all positions in the provided array.
      *
-     * @param {Cartesian[]} cartesians The list of Cartesian instances.
+     * @param {Cartesian3[]} cartesians The list of Cartesian instances.
      * @param {Ellipsoid} [ellipsoid=Ellipsoid.WGS84] The ellipsoid the cartesians are on.
      * @param {Rectangle} [result] The object onto which to store the result, or undefined if a new instance should be created.
      * @returns {Rectangle} The modified result parameter or a new Rectangle instance if none was provided.
@@ -9242,7 +9250,6 @@ define('Core/Rectangle',[
     return Rectangle;
 });
 
-/*global define*/
 define('Core/BoundingSphere',[
         './Cartesian3',
         './Cartographic',
@@ -9345,7 +9352,8 @@ define('Core/BoundingSphere',[
         var zMax = Cartesian3.clone(currentPos, fromPointsZMax);
 
         var numPositions = positions.length;
-        for (var i = 1; i < numPositions; i++) {
+        var i;
+        for (i = 1; i < numPositions; i++) {
             Cartesian3.clone(positions[i], currentPos);
 
             var x = currentPos.x;
@@ -9607,7 +9615,8 @@ define('Core/BoundingSphere',[
         var zMax = Cartesian3.clone(currentPos, fromPointsZMax);
 
         var numElements = positions.length;
-        for (var i = 0; i < numElements; i += stride) {
+        var i;
+        for (i = 0; i < numElements; i += stride) {
             var x = positions[i] + center.x;
             var y = positions[i + 1] + center.y;
             var z = positions[i + 2] + center.z;
@@ -9764,7 +9773,8 @@ define('Core/BoundingSphere',[
         var zMax = Cartesian3.clone(currentPos, fromPointsZMax);
 
         var numElements = positionsHigh.length;
-        for (var i = 0; i < numElements; i += 3) {
+        var i;
+        for (i = 0; i < numElements; i += 3) {
             var x = positionsHigh[i] + positionsLow[i];
             var y = positionsHigh[i + 1] + positionsLow[i + 1];
             var z = positionsHigh[i + 2] + positionsLow[i + 2];
@@ -9961,7 +9971,8 @@ define('Core/BoundingSphere',[
         }
 
         var positions = [];
-        for (var i = 0; i < length; i++) {
+        var i;
+        for (i = 0; i < length; i++) {
             positions.push(boundingSpheres[i].center);
         }
 
@@ -10510,7 +10521,6 @@ define('Core/BoundingSphere',[
     return BoundingSphere;
 });
 
-/*global define*/
 define('Core/Fullscreen',[
         './defined',
         './defineProperties'
@@ -10766,7 +10776,6 @@ define('Core/Fullscreen',[
     return Fullscreen;
 });
 
-/*global define*/
 define('Core/FeatureDetection',[
         './defaultValue',
         './defined',
@@ -11029,7 +11038,6 @@ define('Core/FeatureDetection',[
     return FeatureDetection;
 });
 
-/*global define*/
 define('Core/Color',[
         './Check',
         './defaultValue',
@@ -13179,7 +13187,6 @@ define('Core/Color',[
     return Color;
 });
 
-/*global define*/
 define('Core/WebGLConstants',[
         './freezeObject'
     ], function(
@@ -13794,7 +13801,6 @@ define('Core/WebGLConstants',[
     return freezeObject(WebGLConstants);
 });
 
-/*global define*/
 define('Core/ComponentDatatype',[
         './defaultValue',
         './defined',
@@ -14121,7 +14127,6 @@ define('Core/ComponentDatatype',[
     return freezeObject(ComponentDatatype);
 });
 
-/*global define*/
 define('Core/GeometryType',[
         './freezeObject'
     ], function(
@@ -14141,7 +14146,6 @@ define('Core/GeometryType',[
     return freezeObject(GeometryType);
 });
 
-/*global define*/
 define('Core/PrimitiveType',[
         './freezeObject',
         './WebGLConstants'
@@ -14233,7 +14237,6 @@ define('Core/PrimitiveType',[
     return freezeObject(PrimitiveType);
 });
 
-/*global define*/
 define('Core/Geometry',[
         './Check',
         './defaultValue',
@@ -14428,7 +14431,6 @@ define('Core/Geometry',[
     return Geometry;
 });
 
-/*global define*/
 define('Core/GeometryAttribute',[
         './defaultValue',
         './defined',
@@ -14471,7 +14473,7 @@ define('Core/GeometryAttribute',[
      *   },
      *   primitiveType : Cesium.PrimitiveType.LINE_LOOP
      * });
-     * 
+     *
      * @see Geometry
      */
     function GeometryAttribute(options) {
@@ -14569,7 +14571,6 @@ define('Core/GeometryAttribute',[
     return GeometryAttribute;
 });
 
-/*global define*/
 define('Core/GeometryAttributes',[
         './defaultValue'
     ], function(
@@ -14665,7 +14666,6 @@ define('Core/GeometryAttributes',[
     return GeometryAttributes;
 });
 
-/*global define*/
 define('Core/IndexDatatype',[
         './defined',
         './DeveloperError',
@@ -14811,23 +14811,22 @@ define('Core/IndexDatatype',[
     return freezeObject(IndexDatatype);
 });
 
-/*global define*/
 define('Core/EllipsoidGeodesic',[
         './Cartesian3',
         './Cartographic',
+        './Check',
         './defaultValue',
         './defined',
         './defineProperties',
-        './DeveloperError',
         './Ellipsoid',
         './Math'
     ], function(
         Cartesian3,
         Cartographic,
+        Check,
         defaultValue,
         defined,
         defineProperties,
-        DeveloperError,
         Ellipsoid,
         CesiumMath) {
     'use strict';
@@ -14991,9 +14990,7 @@ define('Core/EllipsoidGeodesic',[
         var firstCartesian = Cartesian3.normalize(ellipsoid.cartographicToCartesian(start, scratchCart2), scratchCart1);
         var lastCartesian = Cartesian3.normalize(ellipsoid.cartographicToCartesian(end, scratchCart2), scratchCart2);
 
-                if (Math.abs(Math.abs(Cartesian3.angleBetween(firstCartesian, lastCartesian)) - Math.PI) < 0.0125) {
-            throw new DeveloperError('geodesic position is not unique');
-        }
+                Check.typeOf.number.greaterThanOrEquals('value', Math.abs(Math.abs(Cartesian3.angleBetween(firstCartesian, lastCartesian)) - Math.PI), 0.0125);
         
         vincentyInverseFormula(ellipsoidGeodesic, ellipsoid.maximumRadius, ellipsoid.minimumRadius,
                                start.longitude, start.latitude, end.longitude, end.latitude);
@@ -15054,9 +15051,7 @@ define('Core/EllipsoidGeodesic',[
          */
         surfaceDistance : {
             get : function() {
-                                if (!defined(this._distance)) {
-                    throw new DeveloperError('set end positions before getting surfaceDistance');
-                }
+                                Check.defined('distance', this._distance);
                 
                 return this._distance;
             }
@@ -15094,9 +15089,7 @@ define('Core/EllipsoidGeodesic',[
          */
         startHeading : {
             get : function() {
-                                if (!defined(this._distance)) {
-                    throw new DeveloperError('set end positions before getting startHeading');
-                }
+                                Check.defined('distance', this._distance);
                 
                 return this._startHeading;
             }
@@ -15110,9 +15103,7 @@ define('Core/EllipsoidGeodesic',[
          */
         endHeading : {
             get : function() {
-                                if (!defined(this._distance)) {
-                    throw new DeveloperError('set end positions before getting endHeading');
-                }
+                                Check.defined('distance', this._distance);
                 
                 return this._endHeading;
             }
@@ -15126,12 +15117,8 @@ define('Core/EllipsoidGeodesic',[
      * @param {Cartographic} end The final planetodetic point on the path.
      */
     EllipsoidGeodesic.prototype.setEndPoints = function(start, end) {
-                if (!defined(start)) {
-            throw new DeveloperError('start cartographic position is required');
-        }
-        if (!defined(end)) {
-            throw new DeveloperError('end cartgraphic position is required');
-        }
+                Check.defined('start', start);
+        Check.defined('end', end);
         
         computeProperties(this, start, end, this._ellipsoid);
     };
@@ -15157,9 +15144,7 @@ define('Core/EllipsoidGeodesic',[
      * @exception {DeveloperError} start and end must be set before calling function interpolateUsingSurfaceDistance
      */
     EllipsoidGeodesic.prototype.interpolateUsingSurfaceDistance = function(distance, result) {
-                if (!defined(this._distance)) {
-            throw new DeveloperError('start and end must be set before calling function interpolateUsingSurfaceDistance');
-        }
+                Check.defined('distance', this._distance);
         
         var constants = this._constants;
 
@@ -15223,7 +15208,6 @@ define('Core/EllipsoidGeodesic',[
     return EllipsoidGeodesic;
 });
 
-/*global define*/
 define('Core/QuadraticRealPolynomial',[
         './DeveloperError',
         './Math'
@@ -15359,7 +15343,6 @@ define('Core/QuadraticRealPolynomial',[
     return QuadraticRealPolynomial;
 });
 
-/*global define*/
 define('Core/CubicRealPolynomial',[
         './DeveloperError',
         './QuadraticRealPolynomial'
@@ -15596,7 +15579,6 @@ define('Core/CubicRealPolynomial',[
     return CubicRealPolynomial;
 });
 
-/*global define*/
 define('Core/QuarticRealPolynomial',[
         './CubicRealPolynomial',
         './DeveloperError',
@@ -15920,7 +15902,6 @@ define('Core/QuarticRealPolynomial',[
     return QuarticRealPolynomial;
 });
 
-/*global define*/
 define('Core/Ray',[
         './Cartesian3',
         './defaultValue',
@@ -15994,7 +15975,6 @@ define('Core/Ray',[
     return Ray;
 });
 
-/*global define*/
 define('Core/IntersectionTests',[
         './Cartesian3',
         './Cartographic',
@@ -16885,7 +16865,6 @@ define('Core/IntersectionTests',[
     return IntersectionTests;
 });
 
-/*global define*/
 define('Core/isArray',[
         './defined'
     ], function(
@@ -16909,19 +16888,18 @@ define('Core/isArray',[
     return isArray;
 });
 
-/*global define*/
 define('Core/Plane',[
         './Cartesian3',
         './defined',
         './DeveloperError',
-        './Math',
-        './freezeObject'
+        './freezeObject',
+        './Math'
     ], function(
         Cartesian3,
         defined,
         DeveloperError,
-        CesiumMath,
-        freezeObject) {
+        freezeObject,
+        CesiumMath) {
     'use strict';
 
     /**
@@ -17095,7 +17073,6 @@ define('Core/Plane',[
     return Plane;
 });
 
-/*global define*/
 define('Core/PolylinePipeline',[
         './Cartesian3',
         './Cartographic',
@@ -17414,7 +17391,6 @@ define('Core/PolylinePipeline',[
     return PolylinePipeline;
 });
 
-/*global define*/
 define('Core/SimplePolylineGeometry',[
         './BoundingSphere',
         './Cartesian3',
@@ -17833,7 +17809,6 @@ define('Core/SimplePolylineGeometry',[
     return SimplePolylineGeometry;
 });
 
-/*global define*/
 define('Workers/createSimplePolylineGeometry',[
         '../Core/defined',
         '../Core/Ellipsoid',

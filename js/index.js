@@ -35,14 +35,14 @@ require(['common'],function(){
 				selectionIndicator : false,//是否显示选取指示器组件
 				timeline : false,//是否显示时间轴
 				navigationHelpButton : false,//是否显示右上角的帮助按钮
-				// imageryProvider : new Cesium.BingMapsImageryProvider({
-				// 	url : '//dev.virtualearth.net',
-				// 	key : "AjQhMyw76oicHqFz7cUc3qTEy3M2fC2YIbcHjqgyMPuQprNVBr3SsvVdOfmlVc0v"
-				// }),
-				imageryProvider : Cesium.createTileMapServiceImageryProvider({
-					url : 'images/BlueMarble_4L/',
-					fileExtension: 'png'
+				imageryProvider : new Cesium.BingMapsImageryProvider({
+					url : '//dev.virtualearth.net',
+					key : "AjQhMyw76oicHqFz7cUc3qTEy3M2fC2YIbcHjqgyMPuQprNVBr3SsvVdOfmlVc0v"
 				})
+				// imageryProvider : Cesium.createTileMapServiceImageryProvider({
+				// 	url : 'images/BlueMarble_4L/',
+				// 	fileExtension: 'png'
+				// })
 				// imageryProvider : Cesium.createTileMapServiceImageryProvider({
 				// 	url : 'images/NaturalEarthII/',
 				// 	fileExtension: 'jpg'

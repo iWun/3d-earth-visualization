@@ -47,6 +47,10 @@ define(['backbone', 'Cesium', '../Util'], function (Backbone, Cesium, Util) {
                     });
                     break;
                 case 'Typhoon':
+                    viewer.camera.flyTo({
+                        destination: Cesium.Cartesian3.fromDegrees(119, 22, 2066800.7320340895975),
+
+                    });
                     require(['models/getStuff'],function(getStuff){
                         var gPoints = viewer.scene.primitives.add(new Cesium.PointPrimitiveCollection()),
                             fnum = '00',
@@ -65,7 +69,7 @@ define(['backbone', 'Cesium', '../Util'], function (Backbone, Cesium, Util) {
                             getStuff(viewer, 'datas/typhoon/HWRFtest' + fnum + '.json', gPoints);
                             if (times > 3)
                                 clearInterval(typhoonTimer);
-                        }, 10000);
+                        }, 5000);
                     });
                     break;
                 default :
